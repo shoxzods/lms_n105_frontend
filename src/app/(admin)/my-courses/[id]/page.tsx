@@ -5,7 +5,7 @@ import { LessonSidebar } from "@/components/student/LessonSidebar";
 import { LessonTabs } from "@/components/student/LessonTabs";
 import { Button } from "@/components/ui/Button";
 import { useLessonsList, useSectionsList } from "@/hooks/useContent";
-import { fileUrl } from "@/lib/api/public";
+import { fileUrl } from "@/api/public";
 import { apiErrorMessage } from "@/lib/apiError";
 
 const ALL = { page: 1, limit: 100 };

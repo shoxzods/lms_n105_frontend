@@ -1,7 +1,7 @@
 import axios, { AxiosError, type InternalAxiosRequestConfig } from "axios";
 
 export const API_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:3000/api/v1";
+  process.env.NEXT_PUBLIC_API_URL ?? "http://13.206.98.145:9191/api/v1";
 
 export const TOKEN_KEY = "lms_access_token";
 export const REFRESH_KEY = "lms_refresh_token";

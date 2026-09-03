@@ -200,7 +200,8 @@ export function Logo({
       src={variant === "light" ? "/images/logo-white.svg" : "/images/logo.svg"}
       alt="IT Live Academy"
       width={120}
-      height={33.015}
+      height={33}
+      style={{ width: "auto", height: "auto" }}
       className={className}
       priority
     />

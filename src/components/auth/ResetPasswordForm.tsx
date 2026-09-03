@@ -6,8 +6,8 @@ import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { EyeOffIcon } from "@/components/ui/icons";
-import { resetPassword } from "@/lib/api/auth";
-import { getApiErrorMessage } from "@/lib/api/client";
+import { resetPassword } from "@/api/auth";
+import { getApiErrorMessage } from "@/api/client";
 
 /**
  * Figma: "Reset password" (517:22544).

@@ -1,8 +1,8 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { apiClient } from "@/lib/api/client";
-import { getPublicCourses } from "@/lib/api/public";
+import { apiClient } from "@/api/client";
+import { getPublicCourses } from "@/api/public";
 import type { ApiResponse, Payment, PublicCourse } from "@/types";
 
 export interface MyCourse {

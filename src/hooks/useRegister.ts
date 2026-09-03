@@ -1,8 +1,8 @@
 "use client";
 
 import { useMutation } from "@tanstack/react-query";
-import { register } from "@/lib/api/auth";
-import { getApiErrorMessage } from "@/lib/api/client";
+import { register } from "@/api/auth";
+import { getApiErrorMessage } from "@/api/client";
 import type { RegisterRequest } from "@/types";
 
 /**

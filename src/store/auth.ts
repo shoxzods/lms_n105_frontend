@@ -1,7 +1,7 @@
 "use client";
 
 import { create } from "zustand";
-import { REFRESH_KEY, TOKEN_KEY } from "@/lib/api/client";
+import { REFRESH_KEY, TOKEN_KEY } from "@/api/client";
 import { decodeJwt, isTokenExpired } from "@/lib/jwt";
 import type { JwtPayload } from "@/types";
 

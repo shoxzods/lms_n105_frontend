@@ -6,7 +6,7 @@ import { FileInput } from "@/components/ui/FileInput";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { Textarea } from "@/components/ui/Textarea";
-import { mentorProfileOf } from "@/lib/api/mentors";
+import { mentorProfileOf } from "@/api/mentors";
 import type { Mentor } from "@/types";
 
 const PHONE_PATTERN = /^\+998\d{9}$/;

@@ -6,7 +6,7 @@ import {
   getPublicCourse,
   getPublicCourses,
   getPublicMentors,
-} from "@/lib/api/public";
+} from "@/api/public";
 import type { PublicCoursesQuery } from "@/types";
 
 export function usePublicCourses(query: PublicCoursesQuery = {}) {

@@ -6,7 +6,7 @@ import {
   deleteMentor,
   getMentors,
   updateMentor,
-} from "@/lib/api/mentors";
+} from "@/api/mentors";
 import type { MentorsQuery, PaginationMeta } from "@/types";
 
 export const mentorsQueryKey = (query: MentorsQuery = {}) =>

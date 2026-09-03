@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import * as api from "@/lib/api/content";
+import * as api from "@/api/content";
 import type {
   AdminCourse,
   CoursesQuery,

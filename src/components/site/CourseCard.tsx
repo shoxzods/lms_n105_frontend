@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { fileUrl } from "@/lib/api/public";
+import { fileUrl } from "@/api/public";
 import { formatPrice } from "@/lib/format";
 import type { PublicCourse } from "@/types";
 import { Stars } from "./Stars";

@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
-import { fileUrl } from "@/lib/api/public";
+import { fileUrl } from "@/api/public";
 import { apiErrorMessage } from "@/lib/apiError";
 import { useMyCourses, type MyCourse } from "@/hooks/useMyCourses";
 

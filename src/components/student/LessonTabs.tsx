@@ -9,8 +9,8 @@ import {
   useHomeworksList,
   useMaterialsList,
 } from "@/hooks/useContent";
-import { checkExam } from "@/lib/api/content";
-import { fileUrl } from "@/lib/api/public";
+import { checkExam } from "@/api/content";
+import { fileUrl } from "@/api/public";
 import type { Exam } from "@/types";
 
 type Tab = "qa" | "materials" | "homeworks" | "exams";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteUser, getUsers, updateAdmin } from "@/lib/api/users";
+import { deleteUser, getUsers, updateAdmin } from "@/api/users";
 import type {
   PaginationMeta,
   UpdateAdminRequest,

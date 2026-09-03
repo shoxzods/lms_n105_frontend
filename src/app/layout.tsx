@@ -38,6 +38,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
       lang="uz"
+      suppressHydrationWarning
       className={`${inter.variable} ${poppins.variable} h-full antialiased`}
     >
       <head>

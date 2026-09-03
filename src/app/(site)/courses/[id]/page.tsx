@@ -6,7 +6,7 @@ import { Container } from "@/components/site/Container";
 import { CoursePurchase } from "@/components/site/CoursePurchase";
 import { CourseSections } from "@/components/site/CourseSections";
 import { usePublicCourse, usePublicCourses } from "@/hooks/usePublic";
-import { fileUrl } from "@/lib/api/public";
+import { fileUrl } from "@/api/public";
 
 const LEVEL_LABELS: Record<string, string> = {
   BEGINNER: "Beginner",

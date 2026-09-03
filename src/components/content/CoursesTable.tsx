@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { EditPencilIcon, TrashIcon } from "@/components/ui/icons";
 import { Table, TableEmpty, Td, Th } from "@/components/ui/Table";
-import { fileUrl } from "@/lib/api/public";
+import { fileUrl } from "@/api/public";
 import { formatPrice } from "@/lib/format";
 import type { AdminCourse } from "@/types";
 

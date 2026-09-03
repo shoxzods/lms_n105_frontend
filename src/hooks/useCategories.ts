@@ -10,7 +10,7 @@ import {
   deleteCategory,
   getCategories,
   updateCategory,
-} from "@/lib/api/categories";
+} from "@/api/categories";
 import type { CategoriesQuery, PaginationMeta } from "@/types";
 
 export const categoriesQueryKey = (query: CategoriesQuery = {}) =>

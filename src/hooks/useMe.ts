@@ -1,8 +1,8 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getUser, updateAdmin } from "@/lib/api/users";
-import { getMyMentorProfile, updateMyMentorProfile } from "@/lib/api/mentors";
+import { getUser, updateAdmin } from "@/api/users";
+import { getMyMentorProfile, updateMyMentorProfile } from "@/api/mentors";
 import { useAuthStore } from "@/store/auth";
 import type { User } from "@/types";
 

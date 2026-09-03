@@ -5,7 +5,7 @@ import {
   createAssistant,
   deleteAssistant,
   getAssistants,
-} from "@/lib/api/assistants";
+} from "@/api/assistants";
 import type { AssistantsQuery, PaginationMeta } from "@/types";
 
 export function useAssistantsList(query: AssistantsQuery) {

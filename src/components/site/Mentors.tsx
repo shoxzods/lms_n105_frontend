@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { usePublicMentors } from "@/hooks/usePublic";
-import { fileUrl } from "@/lib/api/public";
+import { fileUrl } from "@/api/public";
 import type { PublicMentor } from "@/types";
 import { Container } from "./Container";
 import { useT } from "@/lib/i18n";

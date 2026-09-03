@@ -16,7 +16,7 @@ import { useCategoriesList } from "@/hooks/useCategories";
 import { useMentorsList } from "@/hooks/useMentors";
 import { useSectionsList } from "@/hooks/useContent";
 import { usePaymentsList } from "@/hooks/usePayments";
-import { fileUrl } from "@/lib/api/public";
+import { fileUrl } from "@/api/public";
 import { formatDateTime, formatPrice } from "@/lib/format";
 import type { AdminCourse } from "@/types";
 

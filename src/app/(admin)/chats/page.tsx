@@ -5,8 +5,8 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { ChatPanel } from "@/components/chat/ChatPanel";
-import { apiClient } from "@/lib/api/client";
-import { fileUrl } from "@/lib/api/public";
+import { apiClient } from "@/api/client";
+import { fileUrl } from "@/api/public";
 import { apiErrorMessage } from "@/lib/apiError";
 import type { ChatRoom } from "@/types/chat";
 

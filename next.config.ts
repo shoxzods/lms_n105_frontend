@@ -1,27 +1,29 @@
 import type { NextConfig } from "next";
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api/v1";
+let apiHost = "localhost";
+let apiPort = "3000";
+let apiProtocol: "http" | "https" = "http";
+
+try {
+  const parsed = new URL(apiUrl);
+  apiHost = parsed.hostname;
+  apiPort = parsed.port;
+  apiProtocol = parsed.protocol.replace(":", "") as "http" | "https";
+} catch {
+  // fallback to defaults
+}
+
 const nextConfig: NextConfig = {
   images: {
-    // Figma dan eksport qilingan ikonkalar SVG — ular public/ ichida, o'zimizniki
     dangerouslyAllowSVG: true,
     contentDispositionType: "attachment",
-
-    /**
-     * Next.js 16 da yangi cheklov: localhost va ichki IP manzillardagi
-     * rasmlar `remotePatterns` ga mos kelsa ham bloklanadi (SSRF himoyasi).
-     * Backend shu kompyuterda turgani uchun ruxsat berish shart.
-     *
-     * Ishlab chiqarishda backend boshqa domenda bo'ladi — o'shanda bu
-     * qatorni olib tashlash kerak.
-     */
     dangerouslyAllowLocalIP: true,
-
     remotePatterns: [
       {
-        // Backend yuklagan rasm va videolar: http://localhost:3000/uploads/...
-        protocol: "http",
-        hostname: "localhost",
-        port: "3000",
+        protocol: apiProtocol,
+        hostname: apiHost,
+        ...(apiPort ? { port: apiPort } : {}),
         pathname: "/uploads/**",
       },
     ],
@@ -29,3 +31,4 @@ const nextConfig: NextConfig = {
 };
 
 export default nextConfig;
+

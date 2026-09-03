@@ -4,7 +4,7 @@ import { Avatar } from "@/components/ui/Avatar";
 import { EditPencilIcon, TrashIcon } from "@/components/ui/icons";
 import { Table, TableEmpty, Td, Th } from "@/components/ui/Table";
 import { formatDateTime } from "@/lib/format";
-import { mentorProfileOf } from "@/lib/api/mentors";
+import { mentorProfileOf } from "@/api/mentors";
 import type { Mentor } from "@/types";
 
 const COLUMN_COUNT = 7;

@@ -23,12 +23,14 @@ export const ROLE_LABELS: Record<UserRole, string> = {
   STUDENT: "Student",
 };
 
-/** Backend `file` ustunida faqat fayl nomini saqlaydi */
 export function avatarUrl(file: string | null): string | null {
   if (!file) return null;
-  const base = (process.env.NEXT_PUBLIC_API_URL ?? "").replace(/\/api\/v1$/, "");
+  const base = (
+    process.env.NEXT_PUBLIC_API_URL ?? "http://13.206.98.145:9191/api/v1"
+  ).replace(/\/api\/v1$/, "");
   return `${base}/uploads/images/${file}`;
 }
+
 
 /**
  * Prisma `Decimal` ni JSON da MATN sifatida yuboradi ("1600000").

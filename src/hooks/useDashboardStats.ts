@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { getDashboardStats } from "@/lib/api/dashboard";
+import { getDashboardStats } from "@/api/dashboard";
 import { useAuthStore } from "@/store/auth";
 import type { UserRole } from "@/types";
 

@@ -2,7 +2,7 @@
 
 import { useCallback, useMemo, useState } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getNotifications } from "@/lib/api/dashboard";
+import { getNotifications } from "@/api/dashboard";
 import { useAuthStore } from "@/store/auth";
 
 const POLL_MS = 30000;

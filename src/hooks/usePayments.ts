@@ -5,7 +5,7 @@ import {
   createPayment,
   getPayments,
   updatePaymentStatus,
-} from "@/lib/api/payments";
+} from "@/api/payments";
 import type { PaginationMeta, PaymentStatus, PaymentsQuery } from "@/types";
 
 export function usePaymentsList(query: PaymentsQuery) {

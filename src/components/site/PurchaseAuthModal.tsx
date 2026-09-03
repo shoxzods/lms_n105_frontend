@@ -6,8 +6,8 @@ import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
 import { DeviceMobileIcon, EyeOffIcon, UserIcon } from "@/components/ui/icons";
-import { register, verifyOtp } from "@/lib/api/auth";
-import { getApiErrorMessage } from "@/lib/api/client";
+import { register, verifyOtp } from "@/api/auth";
+import { getApiErrorMessage } from "@/api/client";
 import { useAuthStore } from "@/store/auth";
 
 const BOT_USERNAME = process.env.NEXT_PUBLIC_BOT_USERNAME ?? "";

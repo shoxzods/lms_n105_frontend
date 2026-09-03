@@ -2,8 +2,8 @@
 
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import { verifyOtp } from "@/lib/api/auth";
-import { getApiErrorMessage } from "@/lib/api/client";
+import { verifyOtp } from "@/api/auth";
+import { getApiErrorMessage } from "@/api/client";
 import { useAuthStore } from "@/store/auth";
 import type { VerifyOtpRequest } from "@/types";
 
