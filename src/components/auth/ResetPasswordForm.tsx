@@ -5,24 +5,23 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
-import { EyeOffIcon } from "@/components/ui/icons";
+import { DeviceMobileIcon, EyeOffIcon } from "@/components/ui/icons";
 import { resetPassword } from "@/api/auth";
 import { getApiErrorMessage } from "@/api/client";
+import { normalizePhone } from "@/lib/format";
 
-/**
- * Figma: "Reset password" (517:22544).
- *
- * Telefon va Telegramdan kelgan kod oldingi ekrandan (/otp?mode=reset)
- * URL orqali keladi. Backend kodni yana bir bor tekshiradi — HTTP oldingi
- * qadamni eslab qolmaydi, shuning uchun ishonch faqat kodga bo'ladi.
- */
+const PHONE_PREFIX = "+998";
+const PHONE_PATTERN = /^\+998\d{9}$/;
+
 export function ResetPasswordForm() {
   const router = useRouter();
   const params = useSearchParams();
 
-  const phone = params.get("phone") ?? "";
-  const otp = params.get("otp") ?? "";
+  const urlPhone = normalizePhone(params.get("phone") ?? "");
+  const urlOtp = params.get("otp") ?? "";
 
+  const [phone, setPhone] = useState(urlPhone || PHONE_PREFIX);
+  const [otp, setOtp] = useState(urlOtp);
   const [password, setPassword] = useState("");
   const [confirm, setConfirm] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -33,14 +32,25 @@ export function ResetPasswordForm() {
     onSuccess: () => router.replace("/login"),
   });
 
+  const phoneInvalid = touched && !PHONE_PATTERN.test(phone);
+  const otpInvalid = touched && otp.trim().length !== 6;
   const passwordInvalid = touched && password.length < 6;
   const confirmInvalid = touched && confirm !== password;
-  const ready = Boolean(phone && otp);
+
+  const showPhoneInput = !urlPhone || !PHONE_PATTERN.test(urlPhone);
+  const showOtpInput = !urlOtp || urlOtp.trim().length !== 6;
+
+  function handlePhoneChange(value: string) {
+    const digits = value.replace(/\D/g, "").replace(/^998/, "");
+    setPhone(PHONE_PREFIX + digits.slice(0, 9));
+  }
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setTouched(true);
 
+    if (!PHONE_PATTERN.test(phone)) return;
+    if (otp.trim().length !== 6) return;
     if (password.length < 6 || confirm !== password) return;
 
     mutation.mutate();
@@ -55,10 +65,33 @@ export function ResetPasswordForm() {
         Parolni qayta tiklash
       </h1>
 
-      {!ready && (
-        <p className="text-center text-[15px] font-medium text-danger-500">
-          Avval telefon raqamingizni tasdiqlang
-        </p>
+      {showPhoneInput && (
+        <Input
+          id="reset_phone"
+          label="Telefon raqamingiz"
+          inputMode="tel"
+          autoComplete="tel"
+          value={phone}
+          onChange={(e) => handlePhoneChange(e.target.value)}
+          rightSlot={<DeviceMobileIcon />}
+          error={
+            phoneInvalid
+              ? "Telefon raqamingizni to'liq kiriting (+998XXXXXXXXX)"
+              : null
+          }
+        />
+      )}
+
+      {showOtpInput && (
+        <Input
+          id="reset_otp"
+          label="Tasdiqlash kodi (OTP)"
+          inputMode="numeric"
+          placeholder="123456"
+          value={otp}
+          onChange={(e) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
+          error={otpInvalid ? "Tasdiqlash kodini kiriting (6 ta raqam)" : null}
+        />
       )}
 
       <Input
@@ -106,7 +139,7 @@ export function ResetPasswordForm() {
       <Button
         type="submit"
         pill
-        disabled={mutation.isPending || !ready}
+        disabled={mutation.isPending}
         className="w-full"
       >
         {mutation.isPending ? "Saqlanmoqda..." : "Saqlash"}

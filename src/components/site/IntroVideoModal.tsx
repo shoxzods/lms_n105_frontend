@@ -29,32 +29,47 @@ export function IntroVideoModal({
 
   if (!open || !src) return null;
 
+  const isEmbed =
+    src.includes("youtube.com") ||
+    src.includes("youtu.be") ||
+    src.includes("vimeo.com");
+
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4 backdrop-blur-xs"
       onClick={onClose}
     >
       <div
         role="dialog"
         aria-modal="true"
         aria-label="Tanishtiruv videosi"
-        className="w-full max-w-[900px]"
+        className="relative w-full max-w-[900px] overflow-hidden rounded-2xl bg-black shadow-2xl"
         onClick={(e) => e.stopPropagation()}
       >
-        <video
-          src={src}
-          controls
-          autoPlay
-          controlsList="nodownload"
-          className="aspect-video w-full rounded-lg bg-black"
-        />
+        {isEmbed ? (
+          <iframe
+            src={src}
+            title="Tanishtiruv videosi"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            className="aspect-video w-full rounded-2xl"
+          />
+        ) : (
+          <video
+            src={src}
+            controls
+            autoPlay
+            controlsList="nodownload"
+            className="aspect-video w-full rounded-2xl bg-black"
+          />
+        )}
       </div>
 
       <button
         type="button"
         onClick={onClose}
         aria-label="Yopish"
-        className="absolute top-6 right-6 cursor-pointer text-3xl leading-none text-white/80 hover:text-white"
+        className="absolute top-6 right-6 flex size-10 cursor-pointer items-center justify-center rounded-full bg-white/10 text-2xl text-white transition-colors hover:bg-white/20"
       >
         ×
       </button>

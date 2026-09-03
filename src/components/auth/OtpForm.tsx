@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useVerifyOtp } from "@/hooks/useVerifyOtp";
+import { normalizePhone } from "@/lib/format";
 
 const CODE_LENGTH = 6;
 const RESEND_SECONDS = 46;
@@ -59,7 +60,8 @@ export function OtpForm() {
   const router = useRouter();
   const params = useSearchParams();
   const mode = params.get("mode") === "register" ? "register" : "reset";
-  const phone = params.get("phone") ?? "";
+  const rawPhone = params.get("phone") ?? "";
+  const phone = normalizePhone(rawPhone);
 
   const { submit, isPending, errorMessage } = useVerifyOtp();
 

@@ -2,62 +2,77 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { useState } from "react";
 import { ThemedLogo } from "@/components/ui/icons";
 import { Container } from "./Container";
+import { IntroVideoModal } from "./IntroVideoModal";
 import { useT } from "@/lib/i18n";
+
+const INTRO_VIDEO_URL =
+  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
 
 /** Figma: "Footer" (376:36829) */
 export function SiteFooter() {
   const t = useT();
+  const [videoOpen, setVideoOpen] = useState(false);
 
   return (
-    <footer className="flex flex-col items-center gap-16 border-t border-line bg-page-bg pt-16 pb-12">
-      <Container className="flex flex-col items-center gap-12">
-        <ThemedLogo />
+    <>
+      <footer className="flex flex-col items-center gap-16 border-t border-line bg-page-bg pt-16 pb-12">
+        <Container className="flex flex-col items-center gap-12">
+          <ThemedLogo />
 
-        <div className="flex max-w-[768px] flex-col items-center gap-4 text-center">
-          <h2 className="text-3xl leading-[38px] font-semibold text-[#101828] dark:text-ink-50">
-            {t("Biz bilan muvaffaqiyatga erishing")}
-          </h2>
-          <p className="text-xl leading-[30px] text-[#475467] dark:text-ink-200">
-            {t("Eng kuchlilar biz bilan qoladi!")}
-          </p>
-        </div>
-
-        <div className="flex flex-wrap items-start justify-center gap-3">
-          <Link
-            href="#"
-            className="flex items-center justify-center gap-1.5 rounded-lg border border-[#f2f4f7] bg-[#f2f4f7] px-[18px] py-3 text-base leading-6 font-medium text-[#344054] dark:border-ink-800 dark:bg-ink-800 dark:text-ink-100"
-          >
-            <Image
-              src="/icons/play-circle.svg"
-              alt=""
-              width={20}
-              height={20}
-              className="dark:invert"
-            />
-            Intro video
-          </Link>
-
-          <Link
-            href="/contact"
-            className="flex items-center justify-center gap-1.5 rounded-lg border border-brand-500 bg-brand-500 px-[18px] py-3 text-base leading-6 font-medium text-white"
-          >
-            {t("Bog‘lanish")}
-          </Link>
-        </div>
-      </Container>
-
-      <Container>
-        <div className="flex flex-wrap items-center justify-between gap-y-6 border-t border-[#eaecf0] pt-8 text-base leading-6 text-[#667085] dark:border-ink-800 dark:text-ink-500">
-          <p>© 2024. Barcha huquqlar himoyalangan</p>
-
-          <div className="flex h-6 gap-4">
-            <Link href="#">Terminlar</Link>
-            <Link href="#">Xavfsizlik</Link>
+          <div className="flex max-w-[768px] flex-col items-center gap-4 text-center">
+            <h2 className="text-3xl font-semibold leading-[38px] text-[#101828] dark:text-ink-50">
+              {t("Biz bilan muvaffaqiyatga erishing")}
+            </h2>
+            <p className="text-xl leading-[30px] text-[#475467] dark:text-ink-200">
+              {t("Eng kuchlilar biz bilan qoladi!")}
+            </p>
           </div>
-        </div>
-      </Container>
-    </footer>
+
+          <div className="flex flex-wrap items-start justify-center gap-3">
+            <button
+              type="button"
+              onClick={() => setVideoOpen(true)}
+              className="flex cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-[#f2f4f7] bg-[#f2f4f7] px-[18px] py-3 text-base font-medium leading-6 text-[#344054] transition-colors hover:bg-hover dark:border-ink-800 dark:bg-ink-800 dark:text-ink-100"
+            >
+              <Image
+                src="/icons/play-circle.svg"
+                alt=""
+                width={20}
+                height={20}
+                className="dark:invert"
+              />
+              Intro video
+            </button>
+
+            <Link
+              href="/contact"
+              className="flex items-center justify-center gap-1.5 rounded-lg border border-brand-500 bg-brand-500 px-[18px] py-3 text-base font-medium leading-6 text-white transition-colors hover:bg-brand-600"
+            >
+              {t("Bog‘lanish")}
+            </Link>
+          </div>
+        </Container>
+
+        <Container>
+          <div className="flex flex-wrap items-center justify-between gap-y-6 border-t border-[#eaecf0] pt-8 text-base leading-6 text-[#667085] dark:border-ink-800 dark:text-ink-500">
+            <p>© 2024. Barcha huquqlar himoyalangan</p>
+
+            <div className="flex h-6 gap-4">
+              <Link href="#">Terminlar</Link>
+              <Link href="#">Xavfsizlik</Link>
+            </div>
+          </div>
+        </Container>
+      </footer>
+
+      <IntroVideoModal
+        open={videoOpen}
+        src={INTRO_VIDEO_URL}
+        onClose={() => setVideoOpen(false)}
+      />
+    </>
   );
 }
