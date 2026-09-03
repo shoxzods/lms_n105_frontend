@@ -1,8 +1,10 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { deleteUser, getUsers, updateAdmin } from "@/api/users";
+import { createAdmin, deleteUser, getUsers, updateAdmin } from "@/api/users";
+import { matchPhone, matchStartsWith } from "@/lib/search";
 import type {
+  CreateAdminRequest,
   PaginationMeta,
   UpdateAdminRequest,
   User,
@@ -49,14 +51,13 @@ export function useUsersList(query: UsersQuery) {
     clientSideFallback = true;
   }
 
-  // Backend qidiruvni qo'llamaganmi?
+  // Qidiruv (RegExp orqali boshlang'ich qatordan va so'z boshlaridan qidirish)
   if (search && !serverMeta) {
-    const needle = search.toLowerCase();
     users = users.filter(
       (u) =>
-        u.full_name.toLowerCase().includes(needle) ||
-        u.phone.includes(needle) ||
-        (u.email ?? "").toLowerCase().includes(needle),
+        matchStartsWith(u.full_name, search) ||
+        matchPhone(u.phone, search) ||
+        matchStartsWith(u.email, search),
     );
     clientSideFallback = true;
   }
@@ -92,6 +93,13 @@ export function useUsersList(query: UsersQuery) {
 export function useUserMutations() {
   const queryClient = useQueryClient();
 
+  const create = useMutation({
+    mutationFn: (body: CreateAdminRequest) => createAdmin(body),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["users"] });
+    },
+  });
+
   const update = useMutation({
     mutationFn: ({ id, ...body }: { id: number } & UpdateAdminRequest) =>
       updateAdmin(id, body),
@@ -107,5 +115,5 @@ export function useUserMutations() {
     },
   });
 
-  return { update, remove };
+  return { create, update, remove };
 }

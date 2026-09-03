@@ -149,7 +149,7 @@ export interface CategoriesQuery {
 export interface CreateAdminRequest {
   full_name: string;
   phone: string;
-  email: string;
+  email?: string;
   password: string;
   file?: File | null;
 }

@@ -25,7 +25,6 @@ export function AuthShell({
           width={755}
           height={755}
           priority
-          style={{ width: "auto", height: "auto" }}
           className="size-[755px] max-w-full object-contain"
         />
       </div>

@@ -49,13 +49,7 @@ function MyCourseCard({ course }: { course: MyCourse }) {
           </p>
 
           {/* Sevimlilar modeli yo'q — bezak sifatida turadi */}
-          <Image
-            src="/icons/heart.svg"
-            alt=""
-            width={16}
-            height={14}
-            style={{ width: "auto", height: "auto" }}
-          />
+          <Image src="/icons/heart.svg" alt="" width={16} height={14} />
         </div>
 
         <h3 className="truncate text-base font-bold text-page-fg">

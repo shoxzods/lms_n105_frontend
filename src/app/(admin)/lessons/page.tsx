@@ -7,7 +7,6 @@ import { LessonsTable } from "@/components/content/ContentTables";
 import { LessonFormModal } from "@/components/content/ContentForms";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
-import { Select } from "@/components/ui/Select";
 import { SuccessDialog } from "@/components/ui/SuccessDialog";
 import { CirclePlusIcon } from "@/components/ui/icons";
 import { formatDateTime } from "@/lib/format";
@@ -84,28 +83,6 @@ function LessonsPageInner() {
           >
             Dars qo&rsquo;shish
           </Button>
-        }
-        filters={
-          <div className="max-w-xs">
-            <Select
-              id="filter-section"
-              label="Bo&rsquo;lim"
-              value={sectionId}
-              onChange={(e) => {
-                setSectionId(e.target.value);
-                setPage(1);
-              }}
-            >
-              <option value="">Barcha bo&rsquo;limlar</option>
-              {sections.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.courses?.name
-                    ? `${item.courses.name} — ${item.name}`
-                    : item.name}
-                </option>
-              ))}
-            </Select>
-          </div>
         }
         meta={meta}
         onPageChange={setPage}

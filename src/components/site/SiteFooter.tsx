@@ -34,7 +34,6 @@ export function SiteFooter() {
               alt=""
               width={20}
               height={20}
-              style={{ width: "auto", height: "auto" }}
               className="dark:invert"
             />
             Intro video

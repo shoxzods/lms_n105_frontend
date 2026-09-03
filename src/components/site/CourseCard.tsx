@@ -43,13 +43,7 @@ export function CourseCard({ course }: { course: PublicCourse }) {
           <p className="flex-1 truncate text-sm leading-5 font-bold text-page-fg">
             {mentor?.user.full_name ?? "—"}
           </p>
-          <Image
-            src="/icons/heart.svg"
-            alt=""
-            width={20}
-            height={18}
-            style={{ width: "auto", height: "auto" }}
-          />
+          <Image src="/icons/heart.svg" alt="" width={20} height={18} />
         </div>
 
         <div className="flex flex-col gap-[9px]">

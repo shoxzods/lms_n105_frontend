@@ -26,14 +26,7 @@ function FigmaIcon({
       className={`flex shrink-0 items-center justify-center ${className}`}
       style={{ width: box, height: box }}
     >
-      <Image
-        src={src}
-        alt=""
-        width={w}
-        height={h}
-        style={{ width: "auto", height: "auto" }}
-        aria-hidden
-      />
+      <Image src={src} alt="" width={w} height={h} aria-hidden />
     </span>
   );
 }
@@ -158,14 +151,7 @@ export const TrashIcon = () => (
 /* ---------- Boshqa ---------- */
 
 export const DotIcon = () => (
-  <Image
-    src="/icons/dot.svg"
-    alt=""
-    width={8}
-    height={8}
-    style={{ width: "auto", height: "auto" }}
-    aria-hidden
-  />
+  <Image src="/icons/dot.svg" alt="" width={8} height={8} aria-hidden />
 );
 
 /* ---------- Ochiq sayt (landing) ---------- */

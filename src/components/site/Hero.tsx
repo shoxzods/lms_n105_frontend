@@ -46,7 +46,6 @@ export function Hero() {
           alt=""
           width={590}
           height={590}
-          style={{ width: "100%", height: "auto" }}
           className="w-full max-w-[590px]"
           priority
         />

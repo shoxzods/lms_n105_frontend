@@ -2,6 +2,7 @@
 
 import { useEffect, useState, type FormEvent } from "react";
 import { Button } from "@/components/ui/Button";
+import { DropZoneInput } from "@/components/ui/DropZoneInput";
 import { FileInput } from "@/components/ui/FileInput";
 import { Input } from "@/components/ui/Input";
 import { Modal } from "@/components/ui/Modal";
@@ -271,7 +272,7 @@ export function MaterialFormModal({
   onClose: () => void;
   onSubmit: (form: FormData) => void;
 }) {
-  const { lessons } = useLessonsList(ALL, !lockedLesson);
+  const { lessons } = useLessonsList(ALL);
 
   const [description, setDescription] = useState("");
   const [lessonId, setLessonId] = useState("");
@@ -313,52 +314,48 @@ export function MaterialFormModal({
     onSubmit(form);
   }
 
+  // Ro'yxatda lockedLesson bo'lmasa uni ham qo'shib qo'yamiz
+  const allLessons = [...lessons];
+  if (lockedLesson && !allLessons.some((l) => l.id === lockedLesson.id)) {
+    allLessons.unshift(lockedLesson);
+  }
+
   return (
     <Modal
       open={open}
       title={editing ? "Materialni tahrirlash" : "Material qo'shish"}
       onClose={onClose}
+      width={520}
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        <Select
+          id="material-lesson"
+          label="Dars"
+          value={lessonId}
+          onChange={(e) => setLessonId(e.target.value)}
+          error={touched && !lessonId ? "Dars tanlang" : null}
+        >
+          <option value="">Tanlang</option>
+          {allLessons.map((lesson) => (
+            <option key={lesson.id} value={lesson.id}>
+              {lesson.name}
+            </option>
+          ))}
+        </Select>
+
         <Input
           id="material-description"
-          label="Tavsif"
-          requiredMark
+          label="Material uchun izoh"
+          placeholder="Kiriting"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           error={touched && !description.trim() ? "Tavsif kiriting" : null}
         />
 
-        {lockedLesson ? (
-          <Input
-            id="material-lesson"
-            label="Dars"
-            value={lockedLesson.name}
-            readOnly
-            onChange={() => {}}
-          />
-        ) : (
-          <Select
-            id="material-lesson"
-            label="Dars"
-            value={lessonId}
-            onChange={(e) => setLessonId(e.target.value)}
-            error={touched && !lessonId ? "Dars tanlang" : null}
-          >
-            <option value="">Tanlang</option>
-            {lessons.map((lesson) => (
-              <option key={lesson.id} value={lesson.id}>
-                {lesson.name}
-              </option>
-            ))}
-          </Select>
-        )}
-
-        <FileInput
+        <DropZoneInput
           id="material-files"
-          label="Fayllar"
+          label="Fayl biriktirish"
           multiple
-          requiredMark={needsFiles}
           currentName={
             editing?.materialFiles?.length
               ? `${editing.materialFiles.length} ta fayl saqlangan`
@@ -372,11 +369,28 @@ export function MaterialFormModal({
           }
         />
 
-        <FormActions
-          isPending={isPending}
-          onCancel={onClose}
-          submitLabel={editing ? "Saqlash" : "Qo'shish"}
-        />
+        <div className="flex justify-start pt-2">
+          <Button
+            type="submit"
+            disabled={isPending}
+            className="min-w-[120px]"
+            leftIcon={
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                className="size-4"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            }
+          >
+            {isPending ? "Saqlanmoqda..." : "Saqlash"}
+          </Button>
+        </div>
       </form>
     </Modal>
   );
@@ -399,7 +413,7 @@ export function HomeworkFormModal({
   onClose: () => void;
   onSubmit: (form: FormData) => void;
 }) {
-  const { lessons } = useLessonsList(ALL, !lockedLesson);
+  const { lessons } = useLessonsList(ALL);
 
   const [description, setDescription] = useState("");
   const [lessonId, setLessonId] = useState("");
@@ -435,6 +449,11 @@ export function HomeworkFormModal({
     onSubmit(form);
   }
 
+  const allLessons = [...lessons];
+  if (lockedLesson && !allLessons.some((l) => l.id === lockedLesson.id)) {
+    allLessons.unshift(lockedLesson);
+  }
+
   return (
     <Modal
       open={open}
@@ -451,30 +470,20 @@ export function HomeworkFormModal({
           error={touched && !description.trim() ? "Matn kiriting" : null}
         />
 
-        {lockedLesson ? (
-          <Input
-            id="homework-lesson"
-            label="Dars"
-            value={lockedLesson.name}
-            readOnly
-            onChange={() => {}}
-          />
-        ) : (
-          <Select
-            id="homework-lesson"
-            label="Dars"
-            value={lessonId}
-            onChange={(e) => setLessonId(e.target.value)}
-            error={touched && !lessonId ? "Dars tanlang" : null}
-          >
-            <option value="">Tanlang</option>
-            {lessons.map((lesson) => (
-              <option key={lesson.id} value={lesson.id}>
-                {lesson.name}
-              </option>
-            ))}
-          </Select>
-        )}
+        <Select
+          id="homework-lesson"
+          label="Dars"
+          value={lessonId}
+          onChange={(e) => setLessonId(e.target.value)}
+          error={touched && !lessonId ? "Dars tanlang" : null}
+        >
+          <option value="">Tanlang</option>
+          {allLessons.map((lesson) => (
+            <option key={lesson.id} value={lesson.id}>
+              {lesson.name}
+            </option>
+          ))}
+        </Select>
 
         <FileInput
           id="homework-file"
@@ -510,7 +519,7 @@ export function ExamFormModal({
   onClose: () => void;
   onSubmit: (body: Omit<Exam, "id" | "create_at">) => void;
 }) {
-  const { lessons } = useLessonsList(ALL, !lockedLesson);
+  const { lessons } = useLessonsList(ALL);
 
   const [question, setQuestion] = useState("");
   const [variants, setVariants] = useState({ a: "", b: "", c: "", d: "" });
@@ -556,6 +565,11 @@ export function ExamFormModal({
       answer,
       lessonId: Number(lessonId),
     });
+  }
+
+  const allLessons = [...lessons];
+  if (lockedLesson && !allLessons.some((l) => l.id === lockedLesson.id)) {
+    allLessons.unshift(lockedLesson);
   }
 
   return (
@@ -604,30 +618,20 @@ export function ExamFormModal({
           ))}
         </Select>
 
-        {lockedLesson ? (
-          <Input
-            id="exam-lesson"
-            label="Dars"
-            value={lockedLesson.name}
-            readOnly
-            onChange={() => {}}
-          />
-        ) : (
-          <Select
-            id="exam-lesson"
-            label="Dars"
-            value={lessonId}
-            onChange={(e) => setLessonId(e.target.value)}
-            error={touched && !lessonId ? "Dars tanlang" : null}
-          >
-            <option value="">Tanlang</option>
-            {lessons.map((lesson) => (
-              <option key={lesson.id} value={lesson.id}>
-                {lesson.name}
-              </option>
-            ))}
-          </Select>
-        )}
+        <Select
+          id="exam-lesson"
+          label="Dars"
+          value={lessonId}
+          onChange={(e) => setLessonId(e.target.value)}
+          error={touched && !lessonId ? "Dars tanlang" : null}
+        >
+          <option value="">Tanlang</option>
+          {allLessons.map((lesson) => (
+            <option key={lesson.id} value={lesson.id}>
+              {lesson.name}
+            </option>
+          ))}
+        </Select>
 
         <FormActions
           isPending={isPending}

@@ -25,7 +25,9 @@ export async function createAdmin(
   const form = new FormData();
   form.append("full_name", payload.full_name);
   form.append("phone", payload.phone);
-  form.append("email", payload.email);
+  if (payload.email) {
+    form.append("email", payload.email);
+  }
   form.append("password", payload.password);
   if (payload.file) {
     form.append("file", payload.file);

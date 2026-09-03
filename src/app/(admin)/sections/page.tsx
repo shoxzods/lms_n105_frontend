@@ -7,7 +7,6 @@ import { SectionsTable } from "@/components/content/ContentTables";
 import { SectionFormModal } from "@/components/content/ContentForms";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
-import { Select } from "@/components/ui/Select";
 import { SuccessDialog } from "@/components/ui/SuccessDialog";
 import { CirclePlusIcon } from "@/components/ui/icons";
 import {
@@ -62,26 +61,6 @@ function SectionsPageInner() {
           >
             Qo&rsquo;shish
           </Button>
-        }
-        filters={
-          <div className="max-w-xs">
-            <Select
-              id="filter-course"
-              label="Kurs"
-              value={courseId}
-              onChange={(e) => {
-                setCourseId(e.target.value);
-                setPage(1);
-              }}
-            >
-              <option value="">Barcha kurslar</option>
-              {courses.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {item.name}
-                </option>
-              ))}
-            </Select>
-          </div>
         }
         meta={meta}
         onPageChange={setPage}

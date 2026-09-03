@@ -32,7 +32,7 @@ export default function DashboardPage() {
         )}
 
         {canRead && (
-          <div className="flex flex-wrap items-center gap-x-5 gap-y-3">
+          <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5">
             <StatCard
               value={data?.admins ?? 0}
               label="Jami Administratorlar"

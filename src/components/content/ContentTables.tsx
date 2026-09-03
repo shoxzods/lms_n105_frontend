@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import type { ReactNode } from "react";
+import { fileUrl } from "@/api/public";
 import { EditPencilIcon, TrashIcon } from "@/components/ui/icons";
 import { Table, TableEmpty, Td, Th } from "@/components/ui/Table";
 import { formatDateTime, formatPrice } from "@/lib/format";
@@ -13,6 +14,66 @@ import type {
   Material,
   Section,
 } from "@/types";
+
+function getFileTypeInfo(filename: string) {
+  const ext = filename.split(".").pop()?.toLowerCase() || "";
+  if (ext === "pdf") {
+    return {
+      label: "PDF",
+      bg: "bg-red-50 text-red-600 border-red-200",
+      icon: (
+        <svg className="size-4 fill-current" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM13 9V3.5L18.5 9H13z" />
+        </svg>
+      ),
+    };
+  }
+  if (["xls", "xlsx", "csv"].includes(ext)) {
+    return {
+      label: "Excel",
+      bg: "bg-emerald-50 text-emerald-700 border-emerald-200",
+      icon: (
+        <svg className="size-4 fill-current" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM13 9V3.5L18.5 9H13z" />
+        </svg>
+      ),
+    };
+  }
+  if (["doc", "docx"].includes(ext)) {
+    return {
+      label: "Word",
+      bg: "bg-blue-50 text-blue-700 border-blue-200",
+      icon: (
+        <svg className="size-4 fill-current" viewBox="0 0 24 24">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zM13 9V3.5L18.5 9H13z" />
+        </svg>
+      ),
+    };
+  }
+  if (["png", "jpg", "jpeg", "gif", "svg", "webp"].includes(ext)) {
+    return {
+      label: ext.toUpperCase(),
+      bg: "bg-purple-50 text-purple-700 border-purple-200",
+      icon: (
+        <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <rect x="3" y="3" width="18" height="18" rx="2" />
+          <circle cx="8.5" cy="8.5" r="1.5" />
+          <path d="m21 15-5-5L5 21" />
+        </svg>
+      ),
+    };
+  }
+  return {
+    label: ext.toUpperCase() || "Fayl",
+    bg: "bg-gray-100 text-gray-700 border-gray-200",
+    icon: (
+      <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+        <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z" />
+        <polyline points="13 2 13 9 20 9" />
+      </svg>
+    ),
+  };
+}
 
 const LEVEL_LABELS: Record<string, string> = {
   BEGINNER: "Boshlang'ich",
@@ -258,27 +319,48 @@ export function MaterialsTable({
     <Table>
       <thead>
         <tr>
-          <Th width={70}>ID</Th>
-          <Th filterable>Tavsif</Th>
-          <Th>Dars</Th>
-          <Th width={110} align="center">
-            Fayllar
-          </Th>
-          <Th sortable>Yaratilgan vaqt</Th>
+          <Th filterable>Dars</Th>
+          <Th filterable>Material uchun izoh</Th>
+          <Th filterable>Biriktirilgan fayllar</Th>
           <Th width={140} align="center">
             Amallar
           </Th>
         </tr>
       </thead>
 
-      <Body isLoading={isLoading} count={items.length} colSpan={6}>
+      <Body isLoading={isLoading} count={items.length} colSpan={4}>
         {items.map((material) => (
           <tr key={material.id}>
-            <Td>{material.id}</Td>
-            <Td className="max-w-100 truncate">{material.description}</Td>
-            <Td>{material.lessons?.name ?? `#${material.lessonId}`}</Td>
-            <Td align="center">{material.materialFiles?.length ?? 0}</Td>
-            <Td>{formatDateTime(material.create_at)}</Td>
+            <Td className="whitespace-nowrap font-medium text-page-fg">
+              {material.lessons?.name ?? `#${material.lessonId}`}
+            </Td>
+            <Td>{material.description}</Td>
+            <Td>
+              <div className="flex flex-wrap items-center gap-2">
+                {material.materialFiles && material.materialFiles.length > 0 ? (
+                  material.materialFiles.map((fileItem) => {
+                    const info = getFileTypeInfo(fileItem.file);
+                    const url = fileUrl("files", fileItem.file);
+                    return (
+                      <a
+                        key={fileItem.id}
+                        href={url ?? "#"}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80 ${info.bg}`}
+                      >
+                        {info.icon}
+                        <span>{info.label}</span>
+                      </a>
+                    );
+                  })
+                ) : (
+                  <span className="text-xs font-medium text-ink-400">
+                    Fayl biriktirilmagan
+                  </span>
+                )}
+              </div>
+            </Td>
             <Actions item={material} onEdit={onEdit} onDelete={onDelete} />
           </tr>
         ))}
@@ -299,27 +381,45 @@ export function HomeworksTable({
     <Table>
       <thead>
         <tr>
-          <Th width={70}>ID</Th>
-          <Th filterable>Vazifa</Th>
-          <Th>Dars</Th>
-          <Th width={110} align="center">
-            Fayl
-          </Th>
-          <Th sortable>Yaratilgan vaqt</Th>
+          <Th filterable>Dars</Th>
+          <Th filterable>Vazifa uchun izoh</Th>
+          <Th filterable>Biriktirilgan fayl</Th>
           <Th width={140} align="center">
             Amallar
           </Th>
         </tr>
       </thead>
 
-      <Body isLoading={isLoading} count={items.length} colSpan={6}>
+      <Body isLoading={isLoading} count={items.length} colSpan={4}>
         {items.map((homework) => (
           <tr key={homework.id}>
-            <Td>{homework.id}</Td>
-            <Td className="max-w-100 truncate">{homework.description}</Td>
-            <Td>{homework.lessons?.name ?? `#${homework.lessonId}`}</Td>
-            <Td align="center">{homework.file ? "bor" : "yo'q"}</Td>
-            <Td>{formatDateTime(homework.create_at)}</Td>
+            <Td className="whitespace-nowrap font-medium text-page-fg">
+              {homework.lessons?.name ?? `#${homework.lessonId}`}
+            </Td>
+            <Td>{homework.description}</Td>
+            <Td>
+              {homework.file ? (
+                (() => {
+                  const info = getFileTypeInfo(homework.file);
+                  const url = fileUrl("files", homework.file);
+                  return (
+                    <a
+                      href={url ?? "#"}
+                      target="_blank"
+                      rel="noreferrer"
+                      className={`inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-semibold transition-opacity hover:opacity-80 ${info.bg}`}
+                    >
+                      {info.icon}
+                      <span>{info.label}</span>
+                    </a>
+                  );
+                })()
+              ) : (
+                <span className="text-xs font-medium text-ink-400">
+                  Fayl biriktirilmagan
+                </span>
+              )}
+            </Td>
             <Actions item={homework} onEdit={onEdit} onDelete={onDelete} />
           </tr>
         ))}

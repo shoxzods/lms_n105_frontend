@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { CategoriesTable } from "@/components/categories/CategoriesTable";
+import { CategoryFormModal } from "@/components/categories/CategoryFormModal";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { ConfirmDialog } from "@/components/ui/ConfirmDialog";
@@ -25,45 +26,56 @@ export default function CategoriesPage() {
   });
 
   const { create, update, remove } = useCategoryMutations();
+
+  // Create modal
+  const [createOpen, setCreateOpen] = useState(false);
+
+  // Edit modal
+  const [editing, setEditing] = useState<Category | null>(null);
+
+  // Delete confirm
   const [deleting, setDeleting] = useState<Category | null>(null);
+
+  // Success message
   const [success, setSuccess] = useState<string | null>(null);
 
-  /**
-   * Hozircha `prompt` — Figma dagi modal oynasi hali qurilmagan.
-   * Modal tayyor bo'lgach shu uch joy almashtiriladi.
-   */
-  function handleCreate() {
-    const name = window.prompt("Yangi kategoriya nomi:");
-    if (name?.trim()) {
-      create.mutate(name.trim(), {
-        onSuccess: () => setSuccess("Muvaffaqiyatli qo‘shildi"),
-      });
-    }
-  }
-
-  function handleEdit(category: Category) {
-    const name = window.prompt("Yangi nom:", category.name);
-    if (name?.trim() && name.trim() !== category.name) {
-      update.mutate(
-        { id: category.id, name: name.trim() },
-        { onSuccess: () => setSuccess("Muvaffaqiyatli o‘zgartirildi") },
-      );
-    }
-  }
-
-  function confirmDelete() {
-    if (!deleting) return;
-
-    remove.mutate(deleting.id, {
+  function handleCreate(name: string) {
+    create.mutate(name, {
       onSuccess: () => {
-        setDeleting(null);
-        setSuccess("Muvaffaqiyatli o‘chirildi");
+        setCreateOpen(false);
+        create.reset();
+        setSuccess("Kategoriya muvaffaqiyatli qo'shildi");
       },
     });
   }
 
-  const mutationError =
-    create.error ?? update.error ?? remove.error ?? null;
+  function handleEdit(category: Category) {
+    setEditing(category);
+  }
+
+  function handleUpdate(name: string) {
+    if (!editing) return;
+    update.mutate(
+      { id: editing.id, name },
+      {
+        onSuccess: () => {
+          setEditing(null);
+          update.reset();
+          setSuccess("Kategoriya muvaffaqiyatli o'zgartirildi");
+        },
+      },
+    );
+  }
+
+  function confirmDelete() {
+    if (!deleting) return;
+    remove.mutate(deleting.id, {
+      onSuccess: () => {
+        setDeleting(null);
+        setSuccess("Muvaffaqiyatli o'chirildi");
+      },
+    });
+  }
 
   return (
     <>
@@ -74,7 +86,7 @@ export default function CategoriesPage() {
           <Button
             leftIcon={<CirclePlusIcon />}
             className="min-h-12"
-            onClick={handleCreate}
+            onClick={() => setCreateOpen(true)}
           >
             Qo&rsquo;shish
           </Button>
@@ -109,7 +121,7 @@ export default function CategoriesPage() {
             </p>
           )}
 
-          {mutationError && (
+          {(create.isError || update.isError || remove.isError) && (
             <p className="mb-3 text-sm font-medium text-danger-500">
               Amalni bajarib bo&rsquo;lmadi. Kategoriyada kurslar bor
               bo&rsquo;lishi mumkin.
@@ -124,12 +136,40 @@ export default function CategoriesPage() {
           />
         </div>
       </div>
+
+      {/* Create modal */}
+      <CategoryFormModal
+        open={createOpen}
+        onClose={() => {
+          setCreateOpen(false);
+          create.reset();
+        }}
+        onSubmit={handleCreate}
+        isPending={create.isPending}
+        error={create.error}
+      />
+
+      {/* Edit modal */}
+      <CategoryFormModal
+        open={editing !== null}
+        initialName={editing?.name ?? ""}
+        onClose={() => {
+          setEditing(null);
+          update.reset();
+        }}
+        onSubmit={handleUpdate}
+        isPending={update.isPending}
+        error={update.error}
+      />
+
+      {/* Success */}
       <SuccessDialog
         open={success !== null}
         message={success ?? ""}
         onClose={() => setSuccess(null)}
       />
 
+      {/* Delete confirm */}
       <ConfirmDialog
         open={deleting !== null}
         isPending={remove.isPending}

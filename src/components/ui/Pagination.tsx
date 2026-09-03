@@ -21,16 +21,21 @@ interface PaginationProps {
  * Ko'p sahifa bo'lsa o'rtasi "..." bilan qisqartiriladi.
  */
 function buildPages(page: number, totalPages: number): (number | "...")[] {
-  if (totalPages <= 5) {
+  if (totalPages <= 7) {
     return Array.from({ length: totalPages }, (_, i) => i + 1);
   }
 
-  const pages: (number | "...")[] = [];
-  const start = Math.max(1, Math.min(page - 1, totalPages - 3));
-  const end = Math.min(totalPages - 1, start + 2);
+  const pages: (number | "...")[] = [1];
+  if (page > 3) pages.push("...");
 
-  for (let i = start; i <= end; i += 1) pages.push(i);
-  if (end < totalPages - 1) pages.push("...");
+  const start = Math.max(2, page - 1);
+  const end = Math.min(totalPages - 1, page + 1);
+
+  for (let i = start; i <= end; i += 1) {
+    pages.push(i);
+  }
+
+  if (page < totalPages - 2) pages.push("...");
   pages.push(totalPages);
 
   return pages;
@@ -97,7 +102,7 @@ export function Pagination({
                 </span>
               ) : (
                 <button
-                  key={item}
+                  key={`page-${item}-${index}`}
                   type="button"
                   onClick={() => onPageChange(item)}
                   className={`flex w-9 cursor-pointer items-center justify-center rounded-lg px-5 py-2 text-center text-sm font-medium transition-colors ${
