@@ -1,0 +1,33 @@
+<svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="18" height="18" fill="#E0E0E0"/>
+<g id="Administratorlar">
+<path d="M-2198 -822C-2198 -823.104 -2197.1 -824 -2196 -824H552C553.104 -824 554 -823.105 554 -822V5010C554 5011.1 553.104 5012 552 5012H-2196C-2197.1 5012 -2198 5011.1 -2198 5010V-822Z" fill="#C8C8C8"/>
+<path d="M-2196 -823H552V-825H-2196V-823ZM553 -822V5010H555V-822H553ZM552 5011H-2196V5013H552V5011ZM-2197 5010V-822H-2199V5010H-2197ZM-2196 5011C-2196.55 5011 -2197 5010.55 -2197 5010H-2199C-2199 5011.66 -2197.66 5013 -2196 5013V5011ZM553 5010C553 5010.55 552.552 5011 552 5011V5013C553.657 5013 555 5011.66 555 5010H553ZM552 -823C552.552 -823 553 -822.552 553 -822H555C555 -823.657 553.657 -825 552 -825V-823ZM-2196 -825C-2197.66 -825 -2199 -823.657 -2199 -822H-2197C-2197 -822.552 -2196.55 -823 -2196 -823V-825Z" fill="white" fill-opacity="0.1"/>
+<g id="Foydalanuvchilar \ Administratorlar">
+<rect width="1920" height="1080" transform="translate(-1782 -379)" fill="#F0F1F2"/>
+<g id="Body">
+<g id="Container">
+<g id="Table">
+<rect width="1552" height="168" transform="translate(-1438 -63)" fill="white"/>
+<g id="Cell">
+<g id="Cell_2">
+<mask id="path-3-inside-1_0_1" fill="white">
+<path d="M-26 -23H114V41H-26V-23Z"/>
+</mask>
+<path d="M-26 41H-27V42H-26V41ZM114 40H-26V42H114V40ZM-25 41V-23H-27V41H-25Z" fill="#EAECF0" mask="url(#path-3-inside-1_0_1)"/>
+<g id="Actions">
+<g id="Frame 62">
+<rect x="-6" y="-6" width="30" height="30" rx="15" fill="#F2F2F2"/>
+<g id="edit-pencil">
+<path id="Vector" d="M9.76598 4.37141L11.8873 2.25009L15.5996 5.9624L13.4783 8.08372M9.76598 4.37141L2.63425 11.5031C2.44671 11.6907 2.34136 11.945 2.34136 12.2102V15.5083H5.63945C5.90467 15.5083 6.15902 15.403 6.34656 15.2155L13.4783 8.08372M9.76598 4.37141L13.4783 8.08372" stroke="#636C79" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg>
