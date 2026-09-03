@@ -2,7 +2,7 @@ import { io, type Socket } from "socket.io-client";
 import { TOKEN_KEY } from "@/api/client";
 
 const WS_URL = (
-  process.env.NEXT_PUBLIC_API_URL ?? "http://13.206.98.145:9191/api/v1"
+  process.env.NEXT_PUBLIC_API_URL ?? "https://lms-n105.dedyn.io/api/v1"
 ).replace(/\/api\/v1$/, "");
 
 let socket: Socket | null = null;

@@ -2,7 +2,7 @@
 
 ## 1. API Asosiy Manzillari (Base URLs)
 
-- **API Base URL**: `process.env.NEXT_PUBLIC_API_URL` (Standart: `http://13.206.98.145:9191/api/v1`)
+- **API Base URL**: `process.env.NEXT_PUBLIC_API_URL` (Standart: `https://lms-n105.dedyn.io/api/v1`)
 - **Fayllar va Media (Static files)**: `${NEXT_PUBLIC_API_URL.replace(/\/api\/v1$/, "")}/uploads/{folder}/{filename}`
   - Rasmlar: `/uploads/images/{filename}`
   - Videolar: `/uploads/videos/{filename}`

@@ -26,10 +26,11 @@ export const ROLE_LABELS: Record<UserRole, string> = {
 export function avatarUrl(file: string | null): string | null {
   if (!file) return null;
   const base = (
-    process.env.NEXT_PUBLIC_API_URL ?? "http://13.206.98.145:9191/api/v1"
+    process.env.NEXT_PUBLIC_API_URL ?? "https://lms-n105.dedyn.io/api/v1"
   ).replace(/\/api\/v1$/, "");
   return `${base}/uploads/images/${file}`;
 }
+
 
 
 /**

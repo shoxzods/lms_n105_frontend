@@ -35,6 +35,7 @@ export function UserMenu() {
           alt=""
           width={38}
           height={38}
+          style={{ width: "38px", height: "38px" }}
           className="size-[38px] shrink-0 rounded-full object-cover"
         />
 
