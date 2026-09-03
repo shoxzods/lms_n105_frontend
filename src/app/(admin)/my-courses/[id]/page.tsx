@@ -4,6 +4,7 @@ import { use, useEffect, useState } from "react";
 import { LessonSidebar } from "@/components/student/LessonSidebar";
 import { LessonTabs } from "@/components/student/LessonTabs";
 import { Button } from "@/components/ui/Button";
+import { Spinner } from "@/components/ui/Spinner";
 import { useLessonsList, useSectionsList } from "@/hooks/useContent";
 import { fileUrl } from "@/api/public";
 import { apiErrorMessage } from "@/lib/apiError";
@@ -73,12 +74,15 @@ export default function LessonPlayerPage({
 
   return (
     <div className="flex w-full max-w-[1600px] flex-col gap-6 px-6 pb-8 lg:flex-row">
+
       {isError ? (
         <p className="text-sm font-medium text-danger-500">
           {apiErrorMessage(error)}
         </p>
       ) : sectionsLoading ? (
-        <p className="text-sm font-medium text-ink-500">Yuklanmoqda...</p>
+        <div className="flex w-full items-center justify-center py-20">
+          <Spinner size="lg" label="Yuklanmoqda..." />
+        </div>
       ) : (
         <>
           <LessonSidebar

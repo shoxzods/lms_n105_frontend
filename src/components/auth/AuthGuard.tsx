@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect, type ReactNode } from "react";
 import { useAuthStore } from "@/store/auth";
 
+import { Spinner } from "@/components/ui/Spinner";
+
 /**
  * Token localStorage da bo'lgani uchun tekshiruv faqat brauzerda bo'ladi.
  * Token yo'q/muddati tugagan bo'lsa — /login ga qaytaradi.
@@ -27,7 +29,7 @@ export function AuthGuard({ children }: { children: ReactNode }) {
   if (isLoading || !user) {
     return (
       <div className="flex min-h-screen items-center justify-center">
-        <p className="text-sm font-medium text-ink-500">Yuklanmoqda...</p>
+        <Spinner size="lg" label="Yuklanmoqda..." />
       </div>
     );
   }

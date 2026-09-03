@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { PageHeader } from "@/components/layout/PageHeader";
+import { Spinner } from "@/components/ui/Spinner";
 import { fileUrl } from "@/api/public";
 import { apiErrorMessage } from "@/lib/apiError";
 import { useMyCourses, type MyCourse } from "@/hooks/useMyCourses";
@@ -11,11 +12,6 @@ import { useMyCourses, type MyCourse } from "@/hooks/useMyCourses";
 function MyCourseCard({ course }: { course: MyCourse }) {
   const banner = fileUrl("images", course.banner);
   const avatar = fileUrl("images", course.mentorFile);
-
-  /*
-    "Ko'rildi" foizi bazada saqlanmaydi — qaysi darsni kim ko'rgani
-    uchun model yo'q. Shu sabab 0% dan boshlanadi.
-  */
   const progress = 0;
 
   return (
@@ -48,7 +44,6 @@ function MyCourseCard({ course }: { course: MyCourse }) {
             {course.mentorName}
           </p>
 
-          {/* Sevimlilar modeli yo'q — bezak sifatida turadi */}
           <Image src="/icons/heart.svg" alt="" width={16} height={14} />
         </div>
 
@@ -103,7 +98,9 @@ export default function MyCoursesPage() {
 
       <div className="w-full max-w-[1600px] px-6 pb-8">
         {isLoading && (
-          <p className="text-sm font-medium text-ink-500">Yuklanmoqda...</p>
+          <div className="py-12">
+            <Spinner size="md" label="Yuklanmoqda..." />
+          </div>
         )}
 
         {isError && (

@@ -11,8 +11,6 @@ export const metadata: Metadata = {
 };
 
 export default function AboutPage() {
-  const [first, second, ...rest] = CERTIFICATE_IMAGES;
-
   return (
     <>
       <section className="bg-muted py-12">
@@ -40,47 +38,23 @@ export default function AboutPage() {
               Sertifikat va guvohnomalar
             </h2>
 
-            {CERTIFICATE_IMAGES.length === 0 ? (
-              <p className="text-sm text-ink-500">
-                Sertifikatlar hali qo&rsquo;shilmagan.
-              </p>
-            ) : (
-              <div className="grid gap-6 lg:grid-cols-3">
-                {[first, second].filter(Boolean).map((name) => (
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                {CERTIFICATE_IMAGES.map((name, index) => (
                   <span
-                    key={name}
-                    className="relative h-[250px] overflow-hidden rounded-lg bg-card"
+                    key={`${name}-${index}`}
+                    className="relative h-[220px] overflow-hidden rounded-xl border border-line bg-card shadow-xs transition-shadow hover:shadow-md"
                   >
                     <Image
                       src={`/images/certificates/${name}`}
-                      alt=""
+                      alt={`Sertifikat ${index + 1}`}
                       fill
-                      sizes="(max-width: 1024px) 50vw, 33vw"
-                      className="object-contain p-2"
+                      unoptimized
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
+                      className="object-cover"
                     />
                   </span>
                 ))}
-
-                {rest.length > 0 && (
-                  <div className="flex flex-col gap-4">
-                    {rest.map((name) => (
-                      <span
-                        key={name}
-                        className="relative h-[117px] overflow-hidden rounded-lg bg-card"
-                      >
-                        <Image
-                          src={`/images/certificates/${name}`}
-                          alt=""
-                          fill
-                          sizes="33vw"
-                          className="object-contain p-1"
-                        />
-                      </span>
-                    ))}
-                  </div>
-                )}
               </div>
-            )}
           </div>
         </Container>
       </section>

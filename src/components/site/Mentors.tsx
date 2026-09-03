@@ -35,12 +35,13 @@ function MentorCard({ mentor }: { mentor: PublicMentor }) {
   const photo = fileUrl("images", mentor.image ?? mentor.file);
 
   return (
-    <article className="group relative h-[380px] w-[300px] shrink-0 overflow-hidden rounded bg-[#e0e0e0] lg:h-[500px] lg:w-[405px]">
+    <article className="group relative h-[380px] w-[300px] shrink-0 overflow-hidden rounded-xl bg-[#e0e0e0] shadow-sm lg:h-[500px] lg:w-[405px]">
       {photo ? (
         <Image
           src={photo}
           alt={mentor.full_name}
           fill
+          unoptimized
           sizes="(max-width: 1024px) 300px, 405px"
           className="object-cover"
         />
@@ -52,7 +53,7 @@ function MentorCard({ mentor }: { mentor: PublicMentor }) {
 
       <div className="absolute inset-x-0 bottom-0 flex translate-y-full flex-col gap-5 bg-gradient-to-b from-transparent to-black to-[67%] px-5 py-8 transition-transform duration-300 group-hover:translate-y-0">
         <div className="flex flex-col gap-0.5 text-white">
-          <p className="text-xl leading-[30px] font-bold">{mentor.full_name}</p>
+          <p className="text-xl font-bold leading-[30px]">{mentor.full_name}</p>
           <p className="text-sm">{profile?.job ?? "Mentor"}</p>
         </div>
 
@@ -84,10 +85,10 @@ export function Mentors() {
   return (
     <section className="bg-page-bg">
       <Container className="flex flex-col items-center gap-8 py-15 text-center">
-        <h2 className="text-3xl leading-tight font-bold text-page-fg sm:text-4xl lg:text-5xl lg:leading-[60px]">
+        <h2 className="text-3xl font-bold leading-tight text-page-fg sm:text-4xl lg:text-5xl lg:leading-[60px]">
           {t("Tajribali Mentorlar")}
         </h2>
-        <p className="text-xl leading-[30px] font-medium text-ink-500">
+        <p className="text-xl font-medium leading-[30px] text-ink-500">
           {t("Barcha kurslarimiz tajribali mentorlar tomonidan tayyorlangan")}
         </p>
       </Container>
@@ -104,7 +105,7 @@ export function Mentors() {
         </p>
       )}
 
-      <div className="flex gap-8 overflow-x-auto pb-15">
+      <div className="mx-auto flex max-w-[1600px] flex-wrap justify-center gap-8 px-6 pb-15">
         {mentors.map((mentor) => (
           <MentorCard key={mentor.id} mentor={mentor} />
         ))}

@@ -74,6 +74,7 @@ export function MediaGallery() {
               src={`/images/gallery/${name}`}
               alt=""
               fill
+              unoptimized
               sizes="(max-width: 1024px) 50vw, 33vw"
               className="object-cover"
             />
@@ -92,6 +93,7 @@ export function MediaGallery() {
                 src={`/images/gallery/${name}`}
                 alt=""
                 fill
+                unoptimized
                 sizes="(max-width: 640px) 100vw, 50vw"
                 className="object-cover"
               />

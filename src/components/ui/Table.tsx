@@ -2,6 +2,7 @@
 
 import type { ReactNode } from "react";
 import { CaretSortIcon, FilterIcon } from "@/components/ui/icons";
+import { Spinner } from "@/components/ui/Spinner";
 import { useT } from "@/lib/i18n";
 
 /**
@@ -80,14 +81,20 @@ export function TableEmpty({
   message: string;
 }) {
   const t = useT();
+  const isLoading =
+    message === "Yuklanmoqda..." || message.toLowerCase().includes("yuklan");
 
   return (
     <tr>
       <td
         colSpan={colSpan}
-        className="border-b border-l border-line px-5 py-10 text-center text-sm font-medium text-ink-500"
+        className="border-b border-l border-line px-5 py-12 text-center"
       >
-        {t(message)}
+        {isLoading ? (
+          <Spinner size="md" label={t("Yuklanmoqda...")} />
+        ) : (
+          <p className="text-sm font-medium text-ink-500">{t(message)}</p>
+        )}
       </td>
     </tr>
   );
