@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { Button } from "@/components/ui/Button";
-import { ChatPanel } from "@/components/chat/ChatPanel";
+import { StudentQAView } from "@/components/student/StudentQAView";
+import { StudentHomeworkTab } from "@/components/student/StudentHomeworkTab";
 import {
   useExamsList,
   useHomeworksList,
@@ -297,18 +298,7 @@ export function LessonTabs({
       </div>
 
       {tab === "qa" && (
-        <div className="flex flex-col gap-4">
-          <div>
-            <h3 className="text-base font-bold text-page-fg">
-              Savol va javoblar
-            </h3>
-            <p className="text-xs text-ink-500">
-              Tushunmagan joyingizni yozing — mentor yoki assistent javob beradi
-            </p>
-          </div>
-
-          <ChatPanel courseId={courseId} />
-        </div>
+        <StudentQAView courseId={courseId} lessonId={lessonId} />
       )}
 
       {tab === "materials" && (
@@ -334,45 +324,11 @@ export function LessonTabs({
       )}
 
       {tab === "homeworks" && (
-        <div className="flex flex-col gap-4">
-          <h3 className="text-base font-bold text-page-fg">Vazifalar</h3>
-
-          {homeworks.length === 0 && (
-            <p className="text-sm text-ink-500">Vazifa yo&rsquo;q.</p>
-          )}
-
-          <ul className="flex flex-col">
-            {homeworks.map((homework) => (
-              <FileRow
-                key={homework.id}
-                name={homework.file ?? homework.description}
-                href={fileUrl("files", homework.file)}
-              />
-            ))}
-          </ul>
-
-          <div className="flex flex-col gap-1.5">
-            <span className="text-sm font-semibold text-page-fg">
-              Vazifa faylini yuklang
-            </span>
-
-            {/*
-              Student javob faylini yuklashi uchun backendda endpoint yo'q —
-              topshirilgan ishlar uchun model mavjud emas.
-            */}
-            <div className="flex items-stretch overflow-hidden rounded-lg border border-line">
-              <span
-                title="Vazifa topshirish uchun backendda model yo'q"
-                className="flex cursor-not-allowed items-center gap-2 bg-table-head px-4 py-2.5 text-sm font-medium text-ink-500"
-              >
-                Yuklash
-              </span>
-              <span className="flex flex-1 items-center px-4 text-sm text-ink-500">
-                Fayl yuklanmagan
-              </span>
-            </div>
-          </div>
-        </div>
+        <StudentHomeworkTab
+          homeworks={homeworks}
+          lessonId={lessonId}
+          courseId={courseId}
+        />
       )}
 
       {tab === "exams" && <ExamRunner exams={exams} lessonId={lessonId} />}

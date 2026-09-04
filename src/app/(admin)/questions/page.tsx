@@ -1,24 +1,21 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import Image from "next/image";
 import { PageHeader } from "@/components/layout/PageHeader";
 import { Button } from "@/components/ui/Button";
 import { Modal } from "@/components/ui/Modal";
 import { Pagination } from "@/components/ui/Pagination";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { Select } from "@/components/ui/Select";
-import { Table, TableEmpty, Th } from "@/components/ui/Table";
+import { Table, TableEmpty, Td, Th } from "@/components/ui/Table";
 import { TableFooter } from "@/components/ui/TableFooter";
 import { Textarea } from "@/components/ui/Textarea";
+import { useQuestionMutations, useQuestionsList } from "@/hooks/useQuestions";
+import { fileUrl } from "@/api/public";
+import { formatDateTime } from "@/lib/format";
+import type { StudentQuestionItem } from "@/types";
 
-/**
- * Figma: "Savollar" (Savol-javoblar).
- *
- * DIQQAT — ma'lumot YO'Q: `schema.prisma` da student savoli va unga
- * beriladigan javob uchun model mavjud emas. Shu sabab jadval bo'sh
- * turadi. Model qo'shilgach faqat ma'lumot manbai ulanadi — ko'rinish
- * va "Javob berish" oynasi tayyor.
- */
 export default function QuestionsPage() {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
@@ -26,9 +23,16 @@ export default function QuestionsPage() {
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
   const [status, setStatus] = useState("");
-  const [answering, setAnswering] = useState(false);
+  const [answeringItem, setAnsweringItem] = useState<StudentQuestionItem | null>(null);
 
-  const meta = { total: 0, page, limit, totalPages: 1 };
+  const { questions, meta, isLoading, isError, error } = useQuestionsList({
+    page,
+    limit,
+    search: search || undefined,
+    status: status || undefined,
+    from: from || undefined,
+    to: to || undefined,
+  });
 
   return (
     <>
@@ -49,6 +53,7 @@ export default function QuestionsPage() {
 
         <div className="flex flex-wrap items-end gap-3 px-6">
           <SearchBar
+            placeholder="O'quvchining ismi yoki familiyasi"
             defaultValue={search}
             onSearch={(value) => {
               setSearch(value);
@@ -62,7 +67,7 @@ export default function QuestionsPage() {
               value={from}
               onChange={(e) => setFrom(e.target.value)}
               aria-label="Boshlanish sanasi"
-              className="bg-transparent text-sm text-page-fg outline-none"
+              className="bg-transparent text-sm text-page-fg outline-none cursor-pointer"
             />
             <span className="text-ink-500">–</span>
             <input
@@ -70,7 +75,7 @@ export default function QuestionsPage() {
               value={to}
               onChange={(e) => setTo(e.target.value)}
               aria-label="Tugash sanasi"
-              className="bg-transparent text-sm text-page-fg outline-none"
+              className="bg-transparent text-sm text-page-fg outline-none cursor-pointer"
             />
           </div>
 
@@ -78,21 +83,24 @@ export default function QuestionsPage() {
             <Select
               id="question-status"
               value={status}
-              onChange={(e) => setStatus(e.target.value)}
+              onChange={(e) => {
+                setStatus(e.target.value);
+                setPage(1);
+              }}
             >
               <option value="">Holatni tanlang</option>
-              <option value="answered">O&rsquo;qilgan</option>
-              <option value="pending">Javob kutilmoqda</option>
+              <option value="ANSWERED">O&rsquo;qilgan</option>
+              <option value="PENDING">Javob kutilmoqda</option>
             </Select>
           </div>
         </div>
 
         <div className="px-6">
-          <div className="mb-3 rounded-lg border border-[#fec84b] bg-[#fffaeb] px-4 py-3 text-sm font-medium text-[#b54708]">
-            Savol-javoblar bazada saqlanmaydi —{" "}
-            <code className="font-mono">schema.prisma</code> da bunday model
-            yo&rsquo;q. Model qo&rsquo;shilgach jadval to&rsquo;ladi.
-          </div>
+          {isError && (
+            <div className="mb-4 rounded-lg bg-danger-500/10 p-4 text-sm text-danger-500">
+              Ma&lsquo;lumotlarni yuklashda xatolik yuz berdi
+            </div>
+          )}
 
           <Table>
             <thead>
@@ -111,14 +119,105 @@ export default function QuestionsPage() {
                 <Th sortable>Savol</Th>
                 <Th sortable>Javob</Th>
                 <Th sortable>Fayllar</Th>
-                <Th width={150} sortable>
+                <Th width={150} sortable align="center">
                   Amallar
                 </Th>
               </tr>
             </thead>
 
             <tbody>
-              <TableEmpty colSpan={8} message="Savol topilmadi" />
+              {isLoading && <TableEmpty colSpan={8} message="Yuklanmoqda..." />}
+              {!isLoading && questions.length === 0 && (
+                <TableEmpty colSpan={8} message="Savol topilmadi" />
+              )}
+              {!isLoading &&
+                questions.map((item) => {
+                  const avatar =
+                    fileUrl("images", item.user?.image || item.user?.file) ?? null;
+                  const attachedFile = item.file || item.answerFile;
+                  const fileHref = attachedFile
+                    ? fileUrl("files", attachedFile) ?? undefined
+                    : undefined;
+
+                  return (
+                    <tr key={item.id}>
+                      <Td align="center">
+                        <input
+                          type="checkbox"
+                          aria-label={`Belgilash ${item.id}`}
+                          className="size-4 accent-brand-500"
+                        />
+                      </Td>
+                      <Td>
+                        <div className="flex items-center gap-3">
+                          <span className="relative size-9 shrink-0 overflow-hidden rounded-full bg-subtle">
+                            {avatar ? (
+                              <Image
+                                src={avatar}
+                                alt=""
+                                fill
+                                sizes="36px"
+                                className="object-cover"
+                              />
+                            ) : (
+                              <span className="flex size-full items-center justify-center text-xs font-bold text-ink-600">
+                                {item.user?.full_name?.charAt(0) ?? "U"}
+                              </span>
+                            )}
+                          </span>
+                          <span className="font-semibold text-page-fg">
+                            {item.user?.full_name ?? "Noma'lum"}
+                          </span>
+                        </div>
+                      </Td>
+                      <Td>{item.course?.name ?? "—"}</Td>
+                      <Td>{item.section?.name ?? item.lesson?.name ?? "—"}</Td>
+                      <Td className="max-w-[280px] truncate">{item.question}</Td>
+                      <Td className="max-w-[240px] truncate">
+                        {item.answer ? item.answer : "—"}
+                      </Td>
+                      <Td>
+                        {attachedFile && fileHref ? (
+                          <a
+                            href={fileHref}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="inline-flex items-center gap-1.5 font-medium text-brand-600 hover:underline"
+                          >
+                            <svg
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              strokeWidth="2"
+                              className="size-4"
+                            >
+                              <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
+                              <polyline points="14 2 14 8 20 8" />
+                            </svg>
+                            Fayl
+                          </a>
+                        ) : (
+                          "—"
+                        )}
+                      </Td>
+                      <Td align="center">
+                        {item.status === "ANSWERED" || item.answer ? (
+                          <span className="inline-flex items-center rounded-full bg-emerald-500/10 px-3 py-1 text-xs font-bold text-emerald-600">
+                            O&lsquo;qilgan
+                          </span>
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => setAnsweringItem(item)}
+                            className="cursor-pointer rounded-lg bg-brand-600 px-3.5 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-brand-700"
+                          >
+                            Javob berish
+                          </button>
+                        )}
+                      </Td>
+                    </tr>
+                  );
+                })}
             </tbody>
           </Table>
         </div>
@@ -131,31 +230,46 @@ export default function QuestionsPage() {
             setPage(1);
           }}
           fileName="savollar"
-          rows={[]}
+          rows={questions.map((q) => ({
+            ID: q.id,
+            Foydalanuvchi: q.user?.full_name ?? "",
+            Kurs: q.course?.name ?? "",
+            Bo_lim: q.section?.name ?? "",
+            Savol: q.question,
+            Javob: q.answer ?? "",
+            Holat: q.status,
+            Sana: formatDateTime(q.create_at),
+          }))}
         />
       </div>
 
-      <AnswerModal open={answering} onClose={() => setAnswering(false)} />
+      {answeringItem && (
+        <AnswerModal
+          item={answeringItem}
+          open={!!answeringItem}
+          onClose={() => setAnsweringItem(null)}
+        />
+      )}
     </>
   );
 }
 
-/* ==================== Javob berish ==================== */
+/* ==================== Javob berish Modali ==================== */
 
-/**
- * Figma: jadvaldagi ko'k "Javob berish" tugmasi ochadigan oyna.
- * Model qo'shilgach `POST /questions/:id/answer` ga ulanadi.
- */
 function AnswerModal({
+  item,
   open,
   onClose,
 }: {
+  item: StudentQuestionItem;
   open: boolean;
   onClose: () => void;
 }) {
-  const [text, setText] = useState("");
+  const [text, setText] = useState(item.answer ?? "");
   const [file, setFile] = useState<File | null>(null);
   const [touched, setTouched] = useState(false);
+
+  const { answer } = useQuestionMutations();
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -163,7 +277,20 @@ function AnswerModal({
 
     if (!text.trim()) return;
 
-    // TODO: savol-javob modeli qo'shilgach shu yerdan yuboriladi
+    const formData = new FormData();
+    formData.append("answer", text.trim());
+    if (file) {
+      formData.append("file", file);
+    }
+
+    answer.mutate(
+      { id: item.id, formData },
+      {
+        onSuccess: () => {
+          onClose();
+        },
+      },
+    );
   }
 
   return (
@@ -184,8 +311,8 @@ function AnswerModal({
             Fayl yuklash
           </span>
 
-          <div className="flex items-stretch overflow-hidden rounded-lg border border-line">
-            <label className="flex cursor-pointer items-center gap-2 bg-table-head px-4 py-2.5 text-sm font-medium text-page-fg hover:bg-hover">
+          <div className="flex items-center justify-between rounded-lg border border-line bg-card p-2.5">
+            <label className="flex cursor-pointer items-center gap-2 rounded-md bg-subtle px-3 py-1.5 text-xs font-semibold text-page-fg transition-colors hover:bg-hover">
               <svg
                 viewBox="0 0 16 16"
                 fill="none"
@@ -204,16 +331,23 @@ function AnswerModal({
                 className="hidden"
               />
             </label>
-
-            <span className="flex flex-1 items-center px-4 text-sm text-ink-500">
-              {file?.name ?? "File not found"}
+            <span className="truncate text-xs font-medium text-ink-500">
+              {file ? file.name : "File not found"}
             </span>
           </div>
         </div>
 
-        <div className="flex justify-start pt-1">
-          <Button type="submit" className="min-w-[110px]">
-            ✓ Saqlash
+        <div className="mt-2 flex items-center justify-start">
+          <Button
+            type="submit"
+            disabled={answer.isPending}
+            leftIcon={
+              <svg className="size-4 stroke-[2.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            }
+          >
+            Saqlash
           </Button>
         </div>
       </form>

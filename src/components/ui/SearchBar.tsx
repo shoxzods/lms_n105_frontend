@@ -7,9 +7,11 @@ import { useT } from "@/lib/i18n";
 /** Figma: "Table bottom" (380:54395) — 456px maydon + ko'k "Izlash" tugmasi */
 export function SearchBar({
   defaultValue = "",
+  placeholder,
   onSearch,
 }: {
   defaultValue?: string;
+  placeholder?: string;
   onSearch: (value: string) => void;
 }) {
   const t = useT();
@@ -27,7 +29,7 @@ export function SearchBar({
         <input
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          placeholder={`${t("Izlash")}...`}
+          placeholder={placeholder ?? `${t("Izlash")}...`}
           className="min-w-0 flex-1 bg-transparent text-sm text-page-fg outline-none placeholder:text-page-fg/45"
         />
         {value && (

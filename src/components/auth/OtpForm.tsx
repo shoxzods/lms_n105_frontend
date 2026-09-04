@@ -56,6 +56,9 @@ function PasteIcon() {
  * /reset-password ga uzatiladi va u yerda yangi parol bilan yuboriladi.
  * Backend kodni o'sha paytda tekshiradi.
  */
+const BOT_USERNAME =
+  process.env.NEXT_PUBLIC_BOT_USERNAME || "lms_n105_2026_bot";
+
 export function OtpForm() {
   const router = useRouter();
   const params = useSearchParams();
@@ -151,6 +154,19 @@ export function OtpForm() {
           codeInvalid ? "Kod 6 ta raqamdan iborat bo'lsin" : errorMessage
         }
       />
+
+      <p className="text-center text-xs leading-relaxed text-ink-500">
+        Tasdiqlash kodi telefon raqamingizga ulangan Telegram bot:{" "}
+        <a
+          href={`https://t.me/${BOT_USERNAME}`}
+          target="_blank"
+          rel="noreferrer"
+          className="font-bold text-brand-600 hover:underline"
+        >
+          @{BOT_USERNAME}
+        </a>{" "}
+        orqali yuborildi.
+      </p>
 
       <div className="flex w-full flex-col items-center gap-3">
         <span className="flex h-[33px] w-[73px] items-center justify-center rounded-md bg-auth-hero text-sm font-medium text-page-fg">

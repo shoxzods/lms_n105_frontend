@@ -54,7 +54,10 @@ const ADMIN_NAV: NavItem[] = [
     children: [
       { label: "Barcha kurslar", href: "/all-courses" },
       { label: "Kategoriyalar", href: "/categories" },
+      { label: "Vazifalar", href: "/homeworks" },
+      { label: "Savollar", href: "/questions" },
       { label: "Natijalar", href: "/results" },
+      { label: "Savol-javoblar", href: "/chats" },
     ],
   },
 ];
@@ -78,6 +81,8 @@ const MENTOR_NAV: NavItem[] = [
   },
   { label: "To‘lovlar", icon: BookIcon, href: "/payments" },
   { label: "Kurslar", icon: BookIcon, href: "/all-courses" },
+  { label: "Vazifalar", icon: BookIcon, href: "/homeworks" },
+  { label: "Savollar", icon: BookIcon, href: "/questions" },
   { label: "Natijalar", icon: BookIcon, href: "/results" },
 ];
 
@@ -87,7 +92,6 @@ const MENTOR_NAV: NavItem[] = [
  */
 const MINIMAL_NAV: NavItem[] = [
   { label: "Mening kurslarim", icon: BookIcon, href: "/my-courses" },
-  { label: "Savol-javoblar", icon: BookIcon, href: "/chats" },
   { label: "Natijalar", icon: BookIcon, href: "/results" },
 ];
 

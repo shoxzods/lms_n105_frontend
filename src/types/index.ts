@@ -483,3 +483,100 @@ export interface NotificationCounts {
   total: number;
 }
 
+export type StudentQuestionStatus = "PENDING" | "ANSWERED";
+
+export interface StudentQuestionItem {
+  id: number;
+  userId: number;
+  courseId: number;
+  sectionId?: number | null;
+  lessonId?: number | null;
+  question: string;
+  answer?: string | null;
+  file?: string | null;
+  answerFile?: string | null;
+  status: StudentQuestionStatus;
+  create_at: string;
+  update_at: string;
+  user?: {
+    id: number;
+    full_name: string;
+    image?: string | null;
+    file?: string | null;
+    email?: string | null;
+    role?: string;
+  };
+  course?: {
+    id: number;
+    name: string;
+  };
+  section?: {
+    id: number;
+    name: string;
+  };
+  lesson?: {
+    id: number;
+    name: string;
+  };
+}
+
+export interface StudentQuestionsQuery {
+  page?: number;
+  limit?: number;
+  search?: string;
+  courseId?: number;
+  status?: string;
+  from?: string;
+  to?: string;
+}
+
+/* ---------- Topshirilgan vazifalar (Homework Submissions) ---------- */
+
+export type SubmissionStatus = "PENDING" | "GRADED" | "REJECTED";
+
+export interface HomeworkSubmission {
+  id: number;
+  userId: number;
+  courseId: number;
+  lessonId: number;
+  homeworkId?: number | null;
+  file?: string | null;
+  text?: string | null;
+  status: SubmissionStatus;
+  score?: number | null;
+  feedback?: string | null;
+  feedbackFile?: string | null;
+  create_at: string;
+  update_at: string;
+  user?: {
+    id: number;
+    full_name: string;
+    image?: string | null;
+    file?: string | null;
+    email?: string | null;
+    role?: string;
+  };
+  course?: {
+    id: number;
+    name: string;
+  };
+  lesson?: {
+    id: number;
+    name: string;
+  };
+  homework?: {
+    id: number;
+    description: string;
+    file?: string | null;
+  };
+}
+
+export interface HomeworkSubmissionsQuery {
+  page?: number;
+  limit?: number;
+  search?: string;
+  courseId?: number;
+  lessonId?: number;
+  status?: SubmissionStatus | string;
+}
+
