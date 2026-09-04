@@ -106,12 +106,11 @@ export function PaymentsTable({
                     <CheckIcon />
                     Tasdiqlangan
                   </span>
-                ) : (
+                ) : onApprove ? (
                   <button
                     type="button"
-                    onClick={() => onApprove?.(payment)}
+                    onClick={() => onApprove(payment)}
                     disabled={
-                      !onApprove ||
                       approvingKey === `${payment.userId}-${payment.courseId}`
                     }
                     className="inline-flex cursor-pointer items-center gap-1.5 rounded-lg border border-line px-3 py-2 text-xs font-medium text-page-fg transition-colors hover:border-[#12b76a] hover:text-[#027a48] disabled:cursor-not-allowed disabled:opacity-50"
@@ -121,30 +120,36 @@ export function PaymentsTable({
                       ? "..."
                       : "Tasdiqlash"}
                   </button>
+                ) : (
+                  <span className="text-xs text-ink-500">—</span>
                 )}
               </Td>
 
               <Td align="center">
                 <span className="flex items-center justify-center gap-2">
-                  <button
-                    type="button"
-                    onClick={() => onEdit?.(payment)}
-                    disabled={!onEdit}
-                    className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover disabled:cursor-not-allowed disabled:opacity-40"
-                    aria-label="Holatni o‘zgartirish"
-                  >
-                    <EditPencilIcon />
-                  </button>
+                  {onEdit && (
+                    <button
+                      type="button"
+                      onClick={() => onEdit(payment)}
+                      className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover"
+                      aria-label="Holatni o‘zgartirish"
+                    >
+                      <EditPencilIcon />
+                    </button>
+                  )}
 
-                  <button
-                    type="button"
-                    onClick={() => onDelete?.(payment)}
-                    disabled={!onDelete}
-                    className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover disabled:cursor-not-allowed disabled:opacity-40"
-                    aria-label="O‘chirish"
-                  >
-                    <TrashIcon />
-                  </button>
+                  {onDelete && (
+                    <button
+                      type="button"
+                      onClick={() => onDelete(payment)}
+                      className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover"
+                      aria-label="O‘chirish"
+                    >
+                      <TrashIcon />
+                    </button>
+                  )}
+
+                  {!onEdit && !onDelete && <span className="text-xs text-ink-500">—</span>}
                 </span>
               </Td>
             </tr>

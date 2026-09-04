@@ -5,15 +5,21 @@ import {
   createAssistant,
   deleteAssistant,
   getAssistants,
+  updateAssistant,
+  type UpdateAssistantPayload,
 } from "@/api/assistants";
+import { getMyAssistants } from "@/api/mentors";
+import { useAuthStore } from "@/store/auth";
 import type { AssistantsQuery, PaginationMeta } from "@/types";
 
 export function useAssistantsList(query: AssistantsQuery) {
   const { page = 1, limit = 10 } = query;
+  const userRole = useAuthStore((s) => s.user?.role);
 
   const result = useQuery({
-    queryKey: ["assistants", query],
-    queryFn: () => getAssistants(query),
+    queryKey: ["assistants", query, userRole],
+    queryFn: () =>
+      userRole === "TEACHER" ? getMyAssistants(query) : getAssistants(query),
   });
 
   const assistants = result.data?.data ?? [];
@@ -44,6 +50,19 @@ export function useAssistantMutations() {
     },
   });
 
+  const update = useMutation({
+    mutationFn: ({
+      id,
+      payload,
+    }: {
+      id: number;
+      payload: UpdateAssistantPayload;
+    }) => updateAssistant(id, payload),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["assistants"] });
+    },
+  });
+
   const remove = useMutation({
     mutationFn: (id: number) => deleteAssistant(id),
     onSuccess: () => {
@@ -51,5 +70,5 @@ export function useAssistantMutations() {
     },
   });
 
-  return { create, remove };
+  return { create, update, remove };
 }

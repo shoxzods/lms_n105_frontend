@@ -15,11 +15,19 @@ export function apiErrorMessage(error: unknown): string {
     return "Serverga ulanib bo‘lmadi. Backend ishlab turibdimi?";
   }
 
+  const data = error.response.data as { message?: string | string[] } | undefined;
+  if (data?.message) {
+    if (Array.isArray(data.message)) {
+      return data.message.join(", ");
+    }
+    return data.message;
+  }
+
   switch (error.response.status) {
     case 401:
       return "Sessiya tugagan. Qaytadan kiring.";
     case 403:
-      return "Bu ma’lumotni ko‘rishga ruxsatingiz yo‘q.";
+      return "Bu amalni bajarishga ruxsatingiz yo‘q.";
     case 404:
       return "Ma’lumot topilmadi.";
     case 409:

@@ -266,7 +266,7 @@ export function CourseDetailModal({
   course: AdminCourse | null;
   onClose: () => void;
   onEdit: () => void;
-  onDelete: () => void;
+  onDelete?: () => void;
   onAssignAssistant: () => void;
   onRemoveAssistant: () => void;
   isRemoving: boolean;
@@ -307,14 +307,16 @@ export function CourseDetailModal({
             </svg>
           </button>
 
-          <button
-            type="button"
-            onClick={onDelete}
-            aria-label="O'chirish"
-            className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover"
-          >
-            <TrashIcon />
-          </button>
+          {onDelete && (
+            <button
+              type="button"
+              onClick={onDelete}
+              aria-label="O'chirish"
+              className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover"
+            >
+              <TrashIcon />
+            </button>
+          )}
         </div>
 
         <DetailRow label="Kurs nomi">{course.name}</DetailRow>

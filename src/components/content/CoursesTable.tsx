@@ -59,7 +59,7 @@ interface CoursesTableProps {
   onToggleAll: () => void;
   onDetails: (course: AdminCourse) => void;
   onEdit: (course: AdminCourse) => void;
-  onDelete: (course: AdminCourse) => void;
+  onDelete?: (course: AdminCourse) => void;
 }
 
 export function CoursesTable({
@@ -184,14 +184,16 @@ export function CoursesTable({
                       <EditPencilIcon />
                     </button>
 
-                    <button
-                      type="button"
-                      onClick={() => onDelete(course)}
-                      aria-label="O'chirish"
-                      className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover"
-                    >
-                      <TrashIcon />
-                    </button>
+                    {onDelete && (
+                      <button
+                        type="button"
+                        onClick={() => onDelete(course)}
+                        aria-label="O'chirish"
+                        className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover"
+                      >
+                        <TrashIcon />
+                      </button>
+                    )}
                   </span>
                 </Td>
               </tr>

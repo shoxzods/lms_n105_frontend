@@ -54,7 +54,6 @@ const ADMIN_NAV: NavItem[] = [
     children: [
       { label: "Barcha kurslar", href: "/all-courses" },
       { label: "Kategoriyalar", href: "/categories" },
-      { label: "Savol-javoblar", href: "/chats" },
       { label: "Natijalar", href: "/results" },
     ],
   },
@@ -69,8 +68,16 @@ const ADMIN_NAV: NavItem[] = [
  */
 const MENTOR_NAV: NavItem[] = [
   { label: "Asosiy", icon: LayoutGridIcon, href: "/dashboard" },
+  {
+    label: "Foydalanuvchilar",
+    icon: UsersIcon,
+    children: [
+      { label: "Assistentlar", href: "/users/assistants" },
+      { label: "Studentlar", href: "/users/students" },
+    ],
+  },
+  { label: "To‘lovlar", icon: BookIcon, href: "/payments" },
   { label: "Kurslar", icon: BookIcon, href: "/all-courses" },
-  { label: "Savol-javoblar", icon: BookIcon, href: "/chats" },
   { label: "Natijalar", icon: BookIcon, href: "/results" },
 ];
 
@@ -81,6 +88,7 @@ const MENTOR_NAV: NavItem[] = [
 const MINIMAL_NAV: NavItem[] = [
   { label: "Mening kurslarim", icon: BookIcon, href: "/my-courses" },
   { label: "Savol-javoblar", icon: BookIcon, href: "/chats" },
+  { label: "Natijalar", icon: BookIcon, href: "/results" },
 ];
 
 export function navItemsForRole(role: UserRole | undefined): NavItem[] {

@@ -11,6 +11,9 @@ interface DropZoneInputProps {
   currentName?: string | null;
   onChange: (files: FileList | null) => void;
   error?: string | null;
+  uploadText?: string;
+  dragText?: string;
+  hintText?: string;
 }
 
 export function DropZoneInput({
@@ -22,6 +25,9 @@ export function DropZoneInput({
   currentName,
   onChange,
   error,
+  uploadText = "Bu yerga bosing",
+  dragText = "yoki faylni suring",
+  hintText = ".mp4 yoki .MOV",
 }: DropZoneInputProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isDragging, setIsDragging] = useState(false);
@@ -105,12 +111,12 @@ export function DropZoneInput({
             <>
               <p className="text-sm font-medium text-ink-600">
                 <span className="font-semibold text-brand-600 hover:underline">
-                  Click to upload
+                  {uploadText}
                 </span>{" "}
-                or drag and drop
+                {dragText}
               </p>
               <p className="mt-1 text-xs text-ink-400">
-                SVG, PNG, JPG or GIF (max. 800×400px)
+                {hintText}
               </p>
             </>
           )}

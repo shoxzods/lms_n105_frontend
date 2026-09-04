@@ -11,6 +11,7 @@ import {
 } from "@/hooks/useContent";
 import { checkExam } from "@/api/content";
 import { fileUrl } from "@/api/public";
+import { apiErrorMessage } from "@/lib/apiError";
 import type { Exam } from "@/types";
 
 type Tab = "qa" | "materials" | "homeworks" | "exams";
@@ -109,20 +110,69 @@ function ExamRunner({
 
   if (check.isSuccess) {
     const result = check.data.data;
+    const passed = (result?.percent ?? 0) >= 70;
 
     return (
-      <div className="flex flex-col gap-3">
-        <p className="text-base font-bold text-page-fg">
-          Natija: {result?.correct} / {result?.total} ({result?.percent}%)
-        </p>
-        <p className="text-sm text-ink-500">
-          Natija bazaga yozilmadi — imtihon natijalari uchun model yo&rsquo;q.
-        </p>
-        <span>
-          <Button type="button" onClick={() => { check.reset(); setIndex(0); setPicked({}); }}>
+      <div className="flex flex-col gap-5 rounded-xl border border-line bg-card p-6">
+        <div className="flex items-center gap-3">
+          <div
+            className={`flex size-12 items-center justify-center rounded-full text-xl font-bold ${
+              passed ? "bg-[#ecfdf3] text-[#027a48]" : "bg-[#fef3f2] text-[#b42318]"
+            }`}
+          >
+            {passed ? "✓" : "✕"}
+          </div>
+          <div>
+            <h4 className="text-base font-bold text-page-fg">
+              {passed ? "Tabriklaymiz, testdan o'tdingiz!" : "Afsuski, testdan o'ta olmadingiz"}
+            </h4>
+            <p className="text-xs text-ink-500">
+              Natijangiz tizimda saqlandi va profilingizda qayd etildi.
+            </p>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+          <div className="flex flex-col rounded-lg bg-page-bg p-3">
+            <span className="text-xs text-ink-500">Jami savollar</span>
+            <span className="text-lg font-bold text-page-fg">{result?.total ?? exams.length}</span>
+          </div>
+          <div className="flex flex-col rounded-lg bg-page-bg p-3">
+            <span className="text-xs text-[#027a48]">To&rsquo;g&rsquo;ri</span>
+            <span className="text-lg font-bold text-[#027a48]">{result?.correct ?? 0}</span>
+          </div>
+          <div className="flex flex-col rounded-lg bg-page-bg p-3">
+            <span className="text-xs text-[#b42318]">Noto&rsquo;g&rsquo;ri</span>
+            <span className="text-lg font-bold text-[#b42318]">{result?.wrong ?? 0}</span>
+          </div>
+          <div className="flex flex-col rounded-lg bg-page-bg p-3">
+            <span className="text-xs text-ink-500">Natija foizi</span>
+            <span className={`text-lg font-bold ${passed ? "text-[#027a48]" : "text-[#b42318]"}`}>
+              {result?.percent ?? 0}%
+            </span>
+          </div>
+        </div>
+
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2">
+          <Button
+            type="button"
+            variant="secondary"
+            onClick={() => {
+              check.reset();
+              setIndex(0);
+              setPicked({});
+            }}
+          >
             Qaytadan ishlash
           </Button>
-        </span>
+
+          <a
+            href="/results"
+            className="inline-flex items-center text-sm font-medium text-brand-500 hover:underline"
+          >
+            Barcha natijalarimni ko&rsquo;rish &rarr;
+          </a>
+        </div>
       </div>
     );
   }
@@ -177,7 +227,7 @@ function ExamRunner({
 
       {check.isError && (
         <p className="text-sm font-medium text-danger-500">
-          Javoblarni tekshirib bo&rsquo;lmadi
+          {apiErrorMessage(check.error)}
         </p>
       )}
 

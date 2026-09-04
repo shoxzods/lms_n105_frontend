@@ -175,6 +175,7 @@ export function LessonFormModal({
   }, [open, editing, defaultSectionId]);
 
   const needsFile = !editing;
+  const selectedSection = sections.find((s) => String(s.id) === sectionId);
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -197,14 +198,41 @@ export function LessonFormModal({
   return (
     <Modal
       open={open}
-      title={editing ? "Darsni tahrirlash" : "Dars qo'shish"}
+      title={editing ? "Tahrirlash" : "Qo'shish"}
       onClose={onClose}
+      width={520}
     >
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+        {/* Bo'lim nomi (Bo'lim pre-selected bo'lganda disabled input, aks holda Select) */}
+        {defaultSectionId || editing ? (
+          <Input
+            id="lesson-section-name"
+            label="Bo'lim nomi"
+            value={selectedSection?.name || ""}
+            disabled
+            placeholder="Kiriting"
+          />
+        ) : (
+          <Select
+            id="lesson-section"
+            label="Bo'lim nomi"
+            value={sectionId}
+            onChange={(e) => setSectionId(e.target.value)}
+            error={touched && !sectionId ? "Bo'lim tanlang" : null}
+          >
+            <option value="">Tanlang</option>
+            {sections.map((section) => (
+              <option key={section.id} value={section.id}>
+                {section.name}
+              </option>
+            ))}
+          </Select>
+        )}
+
         <Input
           id="lesson-name"
           label="Dars nomi"
-          requiredMark
+          placeholder="Kiriting"
           value={name}
           onChange={(e) => setName(e.target.value)}
           error={touched && name.trim().length < 3 ? "Kamida 3 ta belgi" : null}
@@ -212,43 +240,38 @@ export function LessonFormModal({
 
         <Input
           id="lesson-description"
-          label="Tavsif"
-          requiredMark
+          label="Dars haqida"
+          placeholder="Kiriting"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           error={touched && !description.trim() ? "Tavsif kiriting" : null}
         />
 
-        <Select
-          id="lesson-section"
-          label="Bo'lim"
-          value={sectionId}
-          onChange={(e) => setSectionId(e.target.value)}
-          error={touched && !sectionId ? "Bo'lim tanlang" : null}
-        >
-          <option value="">Tanlang</option>
-          {sections.map((section) => (
-            <option key={section.id} value={section.id}>
-              {section.name}
-            </option>
-          ))}
-        </Select>
-
-        <FileInput
+        <DropZoneInput
           id="lesson-file"
-          label="Dars videosi"
+          label="Fayl biriktirish"
           accept="video/*"
-          requiredMark={needsFile}
           currentName={editing?.file}
           onChange={(files) => setVideo(files?.[0] ?? null)}
           error={touched && needsFile && !video ? "Video tanlang" : null}
+          uploadText="Bu yerga bosing"
+          dragText="yoki faylni suring"
+          hintText=".mp4 yoki .MOV"
         />
 
-        <FormActions
-          isPending={isPending}
-          onCancel={onClose}
-          submitLabel={editing ? "Saqlash" : "Qo'shish"}
-        />
+        <div className="mt-2 flex items-center justify-start">
+          <Button
+            type="submit"
+            disabled={isPending}
+            leftIcon={
+              <svg className="size-4 stroke-[2.5]" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" d="m4.5 12.75 6 6 9-13.5" />
+              </svg>
+            }
+          >
+            Saqlash
+          </Button>
+        </div>
       </form>
     </Modal>
   );

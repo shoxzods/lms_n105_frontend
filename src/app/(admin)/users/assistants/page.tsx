@@ -16,9 +16,13 @@ import { Pagination } from "@/components/ui/Pagination";
 import { SearchBar } from "@/components/ui/SearchBar";
 import { useAssistantMutations, useAssistantsList } from "@/hooks/useAssistants";
 import { apiErrorMessage } from "@/lib/apiError";
+import { useAuthStore } from "@/store/auth";
 import type { Assistant } from "@/types";
 
 export default function AssistantsPage() {
+  const userRole = useAuthStore((s) => s.user?.role);
+  const isTeacher = userRole === "TEACHER";
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
@@ -29,20 +33,52 @@ export default function AssistantsPage() {
     search: search || undefined,
   });
 
-  const { create, remove } = useAssistantMutations();
+  const { create, update, remove } = useAssistantMutations();
   const [formOpen, setFormOpen] = useState(false);
+  const [editing, setEditing] = useState<Assistant | null>(null);
   const [viewing, setViewing] = useState<Assistant | null>(null);
   const [deleting, setDeleting] = useState<Assistant | null>(null);
   const [success, setSuccess] = useState<string | null>(null);
 
   function handleCreate(values: AssistantFormValues) {
-    create.mutate(values, {
-      onSuccess: () => {
-        setFormOpen(false);
-        create.reset();
-        setSuccess("Muvaffaqiyatli qo‘shildi");
+    create.mutate(
+      {
+        full_name: values.full_name,
+        phone: values.phone,
+        password: values.password ?? "",
+        courseId: values.courseId,
       },
-    });
+      {
+        onSuccess: () => {
+          setFormOpen(false);
+          create.reset();
+          setSuccess("Muvaffaqiyatli qo‘shildi");
+        },
+      },
+    );
+  }
+
+  function handleUpdate(values: AssistantFormValues) {
+    if (!editing) return;
+
+    update.mutate(
+      {
+        id: editing.id,
+        payload: {
+          full_name: values.full_name,
+          phone: values.phone,
+          courseId: values.courseId,
+          ...(values.email ? { email: values.email } : {}),
+        },
+      },
+      {
+        onSuccess: () => {
+          setEditing(null);
+          update.reset();
+          setSuccess("Muvaffaqiyatli tahrirlandi");
+        },
+      },
+    );
   }
 
   function confirmDelete() {
@@ -111,10 +147,12 @@ export default function AssistantsPage() {
             assistants={assistants}
             isLoading={isLoading}
             onView={setViewing}
-            onDelete={setDeleting}
+            onEdit={setEditing}
+            onDelete={isTeacher ? undefined : setDeleting}
           />
         </div>
       </div>
+
       <SuccessDialog
         open={success !== null}
         message={success ?? ""}
@@ -133,8 +171,10 @@ export default function AssistantsPage() {
         onClose={() => setViewing(null)}
       />
 
+      {/* Qo'shish modali */}
       <AssistantFormModal
         open={formOpen}
+        mode="create"
         onClose={() => {
           setFormOpen(false);
           create.reset();
@@ -142,6 +182,20 @@ export default function AssistantsPage() {
         onSubmit={handleCreate}
         isPending={create.isPending}
         error={create.error}
+      />
+
+      {/* Tahrirlash modali */}
+      <AssistantFormModal
+        open={editing !== null}
+        mode="edit"
+        initialValues={editing}
+        onClose={() => {
+          setEditing(null);
+          update.reset();
+        }}
+        onSubmit={handleUpdate}
+        isPending={update.isPending}
+        error={update.error}
       />
     </>
   );

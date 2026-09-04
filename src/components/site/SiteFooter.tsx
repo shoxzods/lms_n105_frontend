@@ -3,13 +3,15 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+import { fileUrl } from "@/api/public";
 import { ThemedLogo } from "@/components/ui/icons";
 import { Container } from "./Container";
 import { IntroVideoModal } from "./IntroVideoModal";
 import { useT } from "@/lib/i18n";
 
 const INTRO_VIDEO_URL =
-  "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4";
+  fileUrl("videos", "1788424638521-728162125.webm") ??
+  "https://lms-n105.dedyn.io/uploads/videos/1788424638521-728162125.webm";
 
 /** Figma: "Footer" (376:36829) */
 export function SiteFooter() {

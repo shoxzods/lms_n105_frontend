@@ -16,9 +16,13 @@ import { TableFooter } from "@/components/ui/TableFooter";
 import { usePaymentMutations, usePaymentsList } from "@/hooks/usePayments";
 import { apiErrorMessage } from "@/lib/apiError";
 import { formatDateTime, formatPrice } from "@/lib/format";
+import { useAuthStore } from "@/store/auth";
 import type { Payment, PaymentStatus } from "@/types";
 
 export default function PaymentsPage() {
+  const userRole = useAuthStore((s) => s.user?.role);
+  const isTeacher = userRole === "TEACHER";
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [editing, setEditing] = useState<Payment | null>(null);
@@ -88,13 +92,15 @@ export default function PaymentsPage() {
         title="To‘lovlar"
         breadcrumb={["Foydalanuvchilar", "To‘lovlar"]}
         action={
-          <Button
-            leftIcon={<CirclePlusIcon />}
-            className="min-h-12"
-            onClick={() => setCreating(true)}
-          >
-            Qo&rsquo;shish
-          </Button>
+          !isTeacher ? (
+            <Button
+              leftIcon={<CirclePlusIcon />}
+              className="min-h-12"
+              onClick={() => setCreating(true)}
+            >
+              Qo&rsquo;shish
+            </Button>
+          ) : undefined
         }
       />
 
@@ -122,8 +128,8 @@ export default function PaymentsPage() {
             payments={payments}
             isLoading={isLoading}
             approvingKey={approvingKey}
-            onApprove={handleApprove}
-            onEdit={setEditing}
+            onApprove={isTeacher ? undefined : handleApprove}
+            onEdit={isTeacher ? undefined : setEditing}
           />
         </div>
 

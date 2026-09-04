@@ -76,3 +76,26 @@ export async function updateMentor(
   );
   return data;
 }
+
+/** GET /mentor/my-students — o'qituvchining o'z kurslaridagi talabalari */
+export async function getMyStudents(
+  query: { page?: number; limit?: number; search?: string } = {},
+): Promise<PaginatedResponse<any>> {
+  const { data } = await apiClient.get<PaginatedResponse<any>>(
+    "/mentor/my-students",
+    { params: query },
+  );
+  return data;
+}
+
+/** GET /mentor/my-assistants — o'qituvchining o'z kurslaridagi assistentlari */
+export async function getMyAssistants(
+  query: { page?: number; limit?: number; search?: string } = {},
+): Promise<PaginatedResponse<any>> {
+  const { data } = await apiClient.get<PaginatedResponse<any>>(
+    "/mentor/my-assistants",
+    { params: query },
+  );
+  return data;
+}
+

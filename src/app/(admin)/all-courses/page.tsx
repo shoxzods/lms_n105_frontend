@@ -17,9 +17,14 @@ import { apiErrorMessage } from "@/lib/apiError";
 import { formatPrice } from "@/lib/format";
 import type { AdminCourse } from "@/types";
 
+import { useAuthStore } from "@/store/auth";
+
 type Done = { message: string; tone: "success" | "info" };
 
 export default function AllCoursesPage() {
+  const userRole = useAuthStore((s) => s.user?.role);
+  const isTeacher = userRole === "TEACHER";
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
@@ -162,7 +167,7 @@ export default function AllCoursesPage() {
             setEditing(course);
             setFormOpen(true);
           }}
-          onDelete={setDeleting}
+          onDelete={isTeacher ? undefined : setDeleting}
         />
       </AdminListLayout>
 
@@ -194,10 +199,14 @@ export default function AllCoursesPage() {
           setDetails(null);
           setFormOpen(true);
         }}
-        onDelete={() => {
-          setDeleting(shownDetails);
-          setDetails(null);
-        }}
+        onDelete={
+          isTeacher
+            ? undefined
+            : () => {
+                setDeleting(shownDetails);
+                setDetails(null);
+              }
+        }
         onAssignAssistant={() => setAssigning(shownDetails)}
         onRemoveAssistant={() => {
           if (shownDetails) saveAssistant(shownDetails, "");

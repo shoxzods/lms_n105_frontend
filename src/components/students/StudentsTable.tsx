@@ -85,25 +85,27 @@ export function StudentsTable({
                     <EyeOffIcon />
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() => onEdit?.(student)}
-                    disabled={!onEdit}
-                    className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover disabled:cursor-not-allowed disabled:opacity-40"
-                    aria-label="Tahrirlash"
-                  >
-                    <EditPencilIcon />
-                  </button>
+                  {onEdit && (
+                    <button
+                      type="button"
+                      onClick={() => onEdit(student)}
+                      className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover"
+                      aria-label="Tahrirlash"
+                    >
+                      <EditPencilIcon />
+                    </button>
+                  )}
 
-                  <button
-                    type="button"
-                    onClick={() => onDelete?.(student)}
-                    disabled={!onDelete}
-                    className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover disabled:cursor-not-allowed disabled:opacity-40"
-                    aria-label="O‘chirish"
-                  >
-                    <TrashIcon />
-                  </button>
+                  {onDelete && (
+                    <button
+                      type="button"
+                      onClick={() => onDelete(student)}
+                      className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover"
+                      aria-label="O‘chirish"
+                    >
+                      <TrashIcon />
+                    </button>
+                  )}
                 </span>
               </Td>
             </tr>

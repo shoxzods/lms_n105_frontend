@@ -14,9 +14,13 @@ import { SearchBar } from "@/components/ui/SearchBar";
 import { SuccessDialog } from "@/components/ui/SuccessDialog";
 import { useUserMutations, useUsersList } from "@/hooks/useUsers";
 import { apiErrorMessage } from "@/lib/apiError";
+import { useAuthStore } from "@/store/auth";
 import type { Student } from "@/types";
 
 export default function StudentsPage() {
+  const userRole = useAuthStore((s) => s.user?.role);
+  const isTeacher = userRole === "TEACHER";
+
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   const [search, setSearch] = useState("");
@@ -105,8 +109,8 @@ export default function StudentsPage() {
             students={users}
             isLoading={isLoading}
             onView={setViewing}
-            onEdit={setEditing}
-            onDelete={setDeleting}
+            onEdit={isTeacher ? undefined : setEditing}
+            onDelete={isTeacher ? undefined : setDeleting}
           />
         </div>
       </div>

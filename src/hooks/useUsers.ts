@@ -1,8 +1,10 @@
 "use client";
 
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getMyStudents } from "@/api/mentors";
 import { createAdmin, deleteUser, getUsers, updateAdmin } from "@/api/users";
 import { matchPhone, matchStartsWith } from "@/lib/search";
+import { useAuthStore } from "@/store/auth";
 import type {
   CreateAdminRequest,
   PaginationMeta,
@@ -33,10 +35,14 @@ interface NormalizedUsers {
  */
 export function useUsersList(query: UsersQuery) {
   const { page = 1, limit = 10, role, search } = query;
+  const userRole = useAuthStore((s) => s.user?.role);
 
   const result = useQuery({
-    queryKey: usersQueryKey(query),
-    queryFn: () => getUsers(query),
+    queryKey: [...usersQueryKey(query), userRole],
+    queryFn: () =>
+      userRole === "TEACHER"
+        ? getMyStudents({ page, limit, search })
+        : getUsers(query),
   });
 
   const raw = result.data?.data ?? [];

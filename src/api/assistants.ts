@@ -38,6 +38,32 @@ export async function createAssistant(payload: {
   return data;
 }
 
+/** PATCH /assistant/:id — multipart/form-data */
+export interface UpdateAssistantPayload {
+  full_name?: string;
+  phone?: string;
+  email?: string;
+  courseId?: number;
+}
+
+export async function updateAssistant(
+  id: number,
+  payload: UpdateAssistantPayload,
+): Promise<ApiResponse<Assistant>> {
+  const form = new FormData();
+  if (payload.full_name !== undefined) form.append("full_name", payload.full_name);
+  if (payload.phone !== undefined) form.append("phone", payload.phone);
+  if (payload.email !== undefined) form.append("email", payload.email);
+  if (payload.courseId !== undefined) form.append("courseId", String(payload.courseId));
+
+  const { data } = await apiClient.patch<ApiResponse<Assistant>>(
+    `/assistant/${id}`,
+    form,
+    { headers: { "Content-Type": "multipart/form-data" } },
+  );
+  return data;
+}
+
 /** DELETE /assistant/:id — faqat SUPERADMIN */
 export async function deleteAssistant(
   id: number,

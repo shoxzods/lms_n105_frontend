@@ -17,11 +17,17 @@ import {
 import { formatDateTime } from "@/lib/format";
 import type { Section } from "@/types";
 
+import { TeacherSectionsView } from "@/components/content/TeacherSectionsView";
+import { useAuthStore } from "@/store/auth";
+
 const ALL = { page: 1, limit: 100 };
 
 function SectionsPageInner() {
   const params = useSearchParams();
   const fromUrl = params.get("courseId");
+
+  const userRole = useAuthStore((s) => s.user?.role);
+  const isTeacher = userRole === "TEACHER";
 
   const [courseId, setCourseId] = useState(fromUrl ?? "");
   const [page, setPage] = useState(1);
@@ -87,13 +93,20 @@ function SectionsPageInner() {
           Sana: formatDateTime(section.create_at),
         }))}
       >
-        <SectionsTable
-          items={sections}
-          isLoading={isLoading}
-          linkTo={(section) => `/lessons?sectionId=${section.id}`}
-          onEdit={setForm}
-          onDelete={setDeleting}
-        />
+        {isTeacher ? (
+          <TeacherSectionsView
+            sections={sections}
+            isLoading={isLoading}
+          />
+        ) : (
+          <SectionsTable
+            items={sections}
+            isLoading={isLoading}
+            linkTo={(section) => `/lessons?sectionId=${section.id}`}
+            onEdit={setForm}
+            onDelete={setDeleting}
+          />
+        )}
       </AdminListLayout>
 
       <SectionFormModal

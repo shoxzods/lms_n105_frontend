@@ -102,15 +102,16 @@ export function AssistantsTable({
                     <EditPencilIcon />
                   </button>
 
-                  <button
-                    type="button"
-                    onClick={() => onDelete?.(assistant)}
-                    disabled={!onDelete}
-                    className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover disabled:cursor-not-allowed disabled:opacity-40"
-                    aria-label="O‘chirish"
-                  >
-                    <TrashIcon />
-                  </button>
+                  {onDelete && (
+                    <button
+                      type="button"
+                      onClick={() => onDelete(assistant)}
+                      className="cursor-pointer rounded-full bg-subtle p-1.5 transition-colors hover:bg-hover"
+                      aria-label="O‘chirish"
+                    >
+                      <TrashIcon />
+                    </button>
+                  )}
                 </span>
               </Td>
             </tr>

@@ -393,6 +393,80 @@ export interface ExamsQuery {
   lessonId?: number;
 }
 
+/* ---------- Imtihon natijalari (Exam Results) ---------- */
+
+export type ExamStatus = "PASSED" | "FAILED";
+
+export interface ExamResultStudent {
+  id: number;
+  fullName: string;
+  phone: string;
+  email: string | null;
+  image: string | null;
+}
+
+export interface ExamResultItem {
+  id: number;
+  student?: ExamResultStudent;
+  course: {
+    id: number;
+    name: string;
+  };
+  section: {
+    id: number;
+    name: string;
+  };
+  lesson: {
+    id: number;
+    name: string;
+  };
+  totalQuestions: number;
+  correctAnswers: number;
+  wrongAnswers: number;
+  percentage: number;
+  status: ExamStatus;
+  statusLabel: string;
+  create_at: string;
+}
+
+export interface ExamResultDetailAnswer {
+  questionId: number;
+  question: string;
+  selectedAnswer: ExamAnswer | string;
+  correctAnswer: ExamAnswer | string;
+  isCorrect: boolean;
+  options: {
+    variantA: string;
+    variantB: string;
+    variantC: string;
+    variantD: string;
+  };
+}
+
+export interface ExamResultDetail extends ExamResultItem {
+  details?: ExamResultDetailAnswer[];
+}
+
+export interface ExamResultStats {
+  totalAttempts: number;
+  passedAttempts: number;
+  failedAttempts: number;
+  passRate: number;
+}
+
+export interface ExamResultsQuery {
+  page?: number;
+  limit?: number;
+  search?: string;
+  courseId?: number;
+  sectionId?: number;
+  lessonId?: number;
+  status?: ExamStatus;
+  dateRange?: string;
+  startDate?: string;
+  endDate?: string;
+}
+
 /** GET /dashboard/stats */
 export interface DashboardStats {
   admins: number;
@@ -408,3 +482,4 @@ export interface NotificationCounts {
   messages: number;
   total: number;
 }
+
