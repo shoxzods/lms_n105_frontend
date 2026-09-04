@@ -16,7 +16,7 @@ function MyCourseCard({ course }: { course: MyCourse }) {
 
   return (
     <article className="flex w-full max-w-[280px] flex-col overflow-hidden rounded-lg bg-card shadow-sm">
-      <div className="relative h-[155px] bg-hover dark:bg-ink-800">
+      <div className="relative h-[155px] bg-hover">
         {banner && (
           <Image
             src={banner}
@@ -34,7 +34,7 @@ function MyCourseCard({ course }: { course: MyCourse }) {
 
       <div className="flex flex-col gap-3 p-4">
         <div className="flex items-center gap-2">
-          <span className="relative size-6 shrink-0 overflow-hidden rounded-full bg-ink-200 dark:bg-ink-800">
+          <span className="relative size-6 shrink-0 overflow-hidden rounded-full bg-ink-200">
             {avatar && (
               <Image src={avatar} alt="" fill sizes="24px" className="object-cover" />
             )}

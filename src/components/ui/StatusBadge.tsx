@@ -3,15 +3,15 @@ import type { UserStatus } from "@/types";
 const STYLES: Record<UserStatus, { label: string; className: string }> = {
   ACTIVE: {
     label: "Faol",
-    className: "bg-[#ecfdf3] text-[#027a48] dark:bg-[#053321] dark:text-[#6ce9a6]",
+    className: "bg-[#ecfdf3] text-[#027a48]",
   },
   INACTIVE: {
     label: "Faol emas",
-    className: "bg-[#fef3f2] text-[#b42318] dark:bg-[#3b1211] dark:text-[#fda29b]",
+    className: "bg-[#fef3f2] text-[#b42318]",
   },
   PENDING: {
     label: "Kutilmoqda",
-    className: "bg-[#fffaeb] text-[#b54708] dark:bg-[#3b2708] dark:text-[#fec84b]",
+    className: "bg-[#fffaeb] text-[#b54708]",
   },
 };
 

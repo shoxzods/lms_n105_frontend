@@ -28,7 +28,7 @@ export function Select({
           className={[
             "flex w-full items-center gap-2 rounded-md border bg-card px-4 py-[15px]",
             "transition-colors focus-within:border-brand-500",
-            error ? "border-danger-500" : "border-line dark:border-ink-800",
+            error ? "border-danger-500" : "border-line",
             className,
           ].join(" ")}
         >

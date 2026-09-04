@@ -48,7 +48,7 @@ export function Testimonials() {
         {REVIEWS.map((review, i) => (
           <figure
             key={i}
-            className="flex w-[340px] shrink-0 flex-col gap-[43px] rounded-[10px] border border-line bg-card p-8 shadow-[0_60px_40px_0_rgba(198,212,240,0.25)] lg:w-[405px] dark:shadow-none"
+            className="flex w-[340px] shrink-0 flex-col gap-[43px] rounded-[10px] border border-line bg-card p-8 shadow-[0_60px_40px_0_rgba(198,212,240,0.25)] lg:w-[405px]"
           >
             <Image
               src="/icons/quote.svg"

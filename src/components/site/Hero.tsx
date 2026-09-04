@@ -27,7 +27,7 @@ export function Hero() {
             {t("biz bilan o’rganing!")}
           </h1>
 
-          <p className="text-lg leading-7 font-medium text-ink-500 dark:text-ink-200">
+          <p className="text-lg leading-7 font-medium text-ink-500">
             {t(
               "Tekinga o‘qib, pul ishlashga nima deysiz? Ishonmayapsizmi? Biz buni isbotlaymiz. Hammasi o‘zingizga bog‘liq.",
             )}

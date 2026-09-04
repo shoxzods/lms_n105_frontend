@@ -114,12 +114,6 @@ const DICT: Record<string, Record<Lang, string>> = {
     ru: "Развернуть панель",
     en: "Expand panel",
   },
-  "Tungi rejim": { uz: "Tungi rejim", ru: "Тёмная тема", en: "Dark mode" },
-  "Kunduzgi rejim": {
-    uz: "Kunduzgi rejim",
-    ru: "Светлая тема",
-    en: "Light mode",
-  },
 
   /* ---------- Umumiy amallar ---------- */
   "Qo’shish": { uz: "Qo’shish", ru: "Добавить", en: "Add" },

@@ -17,7 +17,7 @@ export function CourseCard({ course }: { course: PublicCourse }) {
 
   return (
     <article className="flex flex-col overflow-hidden rounded bg-card">
-      <div className="relative flex h-[262px] items-center justify-center overflow-hidden bg-ink-100 dark:bg-ink-800">
+      <div className="relative flex h-[262px] items-center justify-center overflow-hidden bg-ink-100">
         {banner && (
           <Image
             src={banner}
@@ -35,7 +35,7 @@ export function CourseCard({ course }: { course: PublicCourse }) {
 
       <div className="flex flex-col gap-4 p-5">
         <div className="flex items-center gap-2">
-          <span className="relative size-8 shrink-0 overflow-hidden rounded-full bg-ink-200 dark:bg-ink-800">
+          <span className="relative size-8 shrink-0 overflow-hidden rounded-full bg-ink-200">
             {avatar && (
               <Image src={avatar} alt="" fill sizes="32px" className="object-cover" />
             )}

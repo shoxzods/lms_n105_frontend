@@ -20,7 +20,7 @@ function Star({ fill, id }: { fill: "full" | "half" | "empty"; id: string }) {
   return (
     <svg
       viewBox="0 0 21.8422 22"
-      className="size-5 shrink-0 text-ink-200 dark:text-ink-800"
+      className="size-5 shrink-0 text-ink-200"
       aria-hidden
     >
       {fill === "half" && (

@@ -24,8 +24,8 @@ function PublishedBadge({ published }: { published: boolean }) {
     <span
       className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
         published
-          ? "bg-[#ecfdf3] text-[#027a48] dark:bg-[#053321] dark:text-[#6ce9a6]"
-          : "bg-[#fef3f2] text-[#b42318] dark:bg-[#3b1211] dark:text-[#fda29b]"
+          ? "bg-[#ecfdf3] text-[#027a48]"
+          : "bg-[#fef3f2] text-[#b42318]"
       }`}
     >
       {published ? "Faol" : "Nofaol"}

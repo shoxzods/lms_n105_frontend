@@ -154,37 +154,12 @@ export const DotIcon = () => (
   <Image src="/icons/dot.svg" alt="" width={8} height={8} aria-hidden />
 );
 
-/* ---------- Ochiq sayt (landing) ---------- */
-
-export const MoonIcon = () => (
-  <FigmaIcon src="/icons/moon.svg" w={24} h={24} box={24} />
-);
-
-/** Figma da yo'q — tungi rejim tugmasi uchun qo'lda chizilgan */
-export const SunIcon = () => (
-  <FigmaIcon src="/icons/sun.svg" w={24} h={24} box={24} />
-);
-
 export const UserIcon = () => (
   <FigmaIcon src="/icons/user.svg" w={12} h={18} box={24} />
 );
 
-/**
- * Tungi rejimda avtomatik almashadigan logo.
- * Ikkalasi ham chiziladi, CSS bittasini yashiradi — shunda
- * hidratsiya xatosi ham bo'lmaydi.
- */
 export function ThemedLogo({ className = "" }: { className?: string }) {
-  return (
-    <>
-      <span className="dark:hidden">
-        <Logo className={className} />
-      </span>
-      <span className="hidden dark:block">
-        <Logo variant="light" className={className} />
-      </span>
-    </>
-  );
+  return <Logo className={className} />;
 }
 
 export function Logo({

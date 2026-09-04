@@ -3,18 +3,15 @@ import type { PaymentStatus } from "@/types";
 const STYLES: Record<PaymentStatus, { label: string; className: string }> = {
   COMPLETED: {
     label: "To‘landi",
-    className:
-      "bg-[#ecfdf3] text-[#027a48] dark:bg-[#053321] dark:text-[#6ce9a6]",
+    className: "bg-[#ecfdf3] text-[#027a48]",
   },
   PENDING: {
     label: "Kutilmoqda",
-    className:
-      "bg-[#fffaeb] text-[#b54708] dark:bg-[#3b2708] dark:text-[#fec84b]",
+    className: "bg-[#fffaeb] text-[#b54708]",
   },
   REJECTED: {
     label: "Rad etilgan",
-    className:
-      "bg-[#fef3f2] text-[#b42318] dark:bg-[#3b1211] dark:text-[#fda29b]",
+    className: "bg-[#fef3f2] text-[#b42318]",
   },
 };
 

@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { fileUrl } from "@/api/public";
-import { ThemedLogo } from "@/components/ui/icons";
+import { Logo } from "@/components/ui/icons";
 import { Container } from "./Container";
 import { IntroVideoModal } from "./IntroVideoModal";
 import { useT } from "@/lib/i18n";
@@ -22,13 +22,13 @@ export function SiteFooter() {
     <>
       <footer className="flex flex-col items-center gap-16 border-t border-line bg-page-bg pt-16 pb-12">
         <Container className="flex flex-col items-center gap-12">
-          <ThemedLogo />
+          <Logo />
 
           <div className="flex max-w-[768px] flex-col items-center gap-4 text-center">
-            <h2 className="text-3xl font-semibold leading-[38px] text-[#101828] dark:text-ink-50">
+            <h2 className="text-3xl font-semibold leading-[38px] text-[#101828]">
               {t("Biz bilan muvaffaqiyatga erishing")}
             </h2>
-            <p className="text-xl leading-[30px] text-[#475467] dark:text-ink-200">
+            <p className="text-xl leading-[30px] text-[#475467]">
               {t("Eng kuchlilar biz bilan qoladi!")}
             </p>
           </div>
@@ -37,14 +37,13 @@ export function SiteFooter() {
             <button
               type="button"
               onClick={() => setVideoOpen(true)}
-              className="flex cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-[#f2f4f7] bg-[#f2f4f7] px-[18px] py-3 text-base font-medium leading-6 text-[#344054] transition-colors hover:bg-hover dark:border-ink-800 dark:bg-ink-800 dark:text-ink-100"
+              className="flex cursor-pointer items-center justify-center gap-1.5 rounded-lg border border-[#f2f4f7] bg-[#f2f4f7] px-[18px] py-3 text-base font-medium leading-6 text-[#344054] transition-colors hover:bg-hover"
             >
               <Image
                 src="/icons/play-circle.svg"
                 alt=""
                 width={20}
                 height={20}
-                className="dark:invert"
               />
               Intro video
             </button>
@@ -59,7 +58,7 @@ export function SiteFooter() {
         </Container>
 
         <Container>
-          <div className="flex flex-wrap items-center justify-between gap-y-6 border-t border-[#eaecf0] pt-8 text-base leading-6 text-[#667085] dark:border-ink-800 dark:text-ink-500">
+          <div className="flex flex-wrap items-center justify-between gap-y-6 border-t border-[#eaecf0] pt-8 text-base leading-6 text-[#667085]">
             <p>© 2024. Barcha huquqlar himoyalangan</p>
 
             <div className="flex h-6 gap-4">

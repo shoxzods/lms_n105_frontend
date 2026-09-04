@@ -3,9 +3,8 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ChevronDownSm, ThemedLogo, UserIcon } from "@/components/ui/icons";
+import { ChevronDownSm, Logo, UserIcon } from "@/components/ui/icons";
 import { Container } from "./Container";
-import { ThemeToggle } from "./ThemeToggle";
 import { useT } from "@/lib/i18n";
 import { useLangStore, type Lang } from "@/store/lang";
 
@@ -32,7 +31,7 @@ export function SiteNavbar() {
         {/* Chap tomon — logo va menyu */}
         <div className="flex items-center gap-[29px]">
           <Link href="/" aria-label="Bosh sahifa">
-            <ThemedLogo />
+            <Logo />
           </Link>
 
           <nav className="hidden items-center gap-8 lg:flex">
@@ -46,7 +45,7 @@ export function SiteNavbar() {
                   className={`flex items-center justify-center p-2 text-[15px] font-medium ${
                     active
                       ? "border-b border-brand-500 text-page-fg"
-                      : "text-[#2f3641] dark:text-ink-200"
+                      : "text-[#2f3641]"
                   }`}
                 >
                   {t(link.label)}
@@ -56,11 +55,9 @@ export function SiteNavbar() {
           </nav>
         </div>
 
-        {/* O'ng tomon — til, mavzu, kirish */}
+        {/* O'ng tomon — til va kirish */}
         <div className="flex items-center gap-4">
           <SiteLangSelector />
-
-          <ThemeToggle className="hidden sm:flex" />
 
           <Link
             href="/login"
@@ -103,9 +100,9 @@ function SiteLangSelector() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="flex h-14 cursor-pointer items-center gap-2 rounded-full bg-ink-100 pr-2.5 pl-1.5 dark:bg-ink-800"
+        className="flex h-14 cursor-pointer items-center gap-2 rounded-full bg-ink-100 pr-2.5 pl-1.5"
       >
-        <span className="flex size-11 items-center justify-center rounded-full bg-ink-200 text-base text-page-fg dark:bg-ink-900 dark:text-ink-50">
+        <span className="flex size-11 items-center justify-center rounded-full bg-ink-200 text-base text-page-fg">
           {current.short}
         </span>
         <ChevronDownSm />
@@ -127,7 +124,7 @@ function SiteLangSelector() {
                 className={`cursor-pointer rounded px-3 py-2 text-left text-sm font-medium transition-colors ${
                   item.code === lang
                     ? "bg-brand-500 text-white"
-                    : "text-page-fg hover:bg-ink-100 dark:hover:bg-ink-800"
+                    : "text-page-fg hover:bg-ink-100"
                 }`}
               >
                 {item.short}
